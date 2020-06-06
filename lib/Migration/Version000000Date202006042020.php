@@ -33,7 +33,7 @@
                 'notnull' => true,
                 'length' => 200,
             ]);
-            $table->addColumn('link', 'text', [
+            $table->addColumn('link', 'teVersion000001Date202006052120xt', [
                 'notnull' => false,
             ]);
             

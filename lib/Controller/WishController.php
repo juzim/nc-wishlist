@@ -9,7 +9,7 @@
 
  class WishController extends Controller {
 
-    /** @var NoteService */
+    /** @var WishService */
 	private $service;
 
 	/** @var string */
@@ -33,11 +33,11 @@
      * @NoAdminRequired
      *
      * @param int $id
-     */
-    public function show(int $id) {
+     */					
+    public function show(int $id) {			
         return $this->handleNotFound(function () use ($id) {
             return $this->service->find($id, $this->userId);
-        });
+        });			
     }
 
      /**
@@ -47,9 +47,12 @@
      * @param string $content
      * @param string $link
      */
+    // public function create(string $title, string $content = '', string $link = null, string $targetUser) {
+        // return $this->service->create($title, $content, $link, $this->userId, $targetUser);
+    // }
     public function create(string $title, string $content = '', string $link = null) {
-        return $this->service->create($title, $content, $link, $this->userId);
-    }
+        return $this->service->create($title, $content, $link, $this->userId, $this->userId);
+    }        
 
     /**
      * @NoAdminRequired
@@ -58,9 +61,9 @@
      * @param string $title
      * @param string $content
      */
-    public function update(int $id, string $title, string $comment = '', string $link = NULL) {
+    public function update(int $id, string $title, string $comment = '', string $link = NULL, $targetUser) {
         return $this->handleNotFound(function () use ($id, $title, $comment, $link) {
-            return $this->service->update($id, $title, $comment, $link, $this->userId);
+            return $this->service->update($id, $title, $comment, $link, $targetUser);
         });
     }
 

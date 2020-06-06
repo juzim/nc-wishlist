@@ -7,6 +7,12 @@
 				button-id="new-wishlist-button"
 				button-class="icon-add"
 				@click="newWish" />
+
+			<AppNavigationItem  v-if="!loading"
+			:title="t('wishlist', 'Overview')"
+				:disabled="false"
+				@click="openOverview" />
+				
 			<ul>
 				<AppNavigationItem v-for="wish in wishes"
 					:key="wish.id"
@@ -34,7 +40,8 @@
 					v-model="currentWish.title"
 					type="text"
 					:disabled="updating">
-				<textarea ref="content" v-model="currentWish.content" :disabled="updating" />
+				<textarea ref="comment" v-model="currentWish.comment" :disabled="updating" />
+				<textarea ref="link" v-model="currentWish.link" :disabled="updating" />
 				<input type="button"
 					class="primary"
 					:value="t('wishlist', 'Save')"
@@ -70,6 +77,7 @@ export default {
 	data: function() {
 		return {
 			wishes: [],
+			allWishes: [],
 			currentWishId: null,
 			updating: false,
 			loading: true,
@@ -122,6 +130,9 @@ export default {
 			this.$nextTick(() => {
 				this.$refs.content.focus()
 			})
+		},
+		openOverview() {
+			this.currentWishId = null
 		},
 		/**
 		 * Action tiggered when clicking the save button
@@ -177,7 +188,7 @@ export default {
 			this.updating = false
 		},
 		/**
-		 * Update an existing wish on the server
+		 * Update an existing winewWish on the server
 		 * @param {Object} wish Wish object
 		 */
 		async updateWish(wish) {

@@ -14,11 +14,14 @@ class WishService {
 
     private $mapper;
 
+
     public function __construct(WishMapper $mapper){
         $this->mapper = $mapper;
     }
 
     public function findAll(string $userId) {
+        // $userIds = $this->mapper->getAllUserIdsWithWishes();
+        // print("==========================" . $userIds);
         return $this->mapper->findAll($userId);
     }
 
@@ -33,6 +36,7 @@ class WishService {
 
     public function find(int $id, string $userId) {
         try {
+
             return $this->mapper->find($id, $userId);
 
         // in order to be able to plug in different storage backends like files
@@ -44,21 +48,24 @@ class WishService {
         }
     }
 
-    public function create(string $title, string $comment = '', string $link = null, string $userId) {
-        $wish = new Wish();
+    public function create(string $title, string $comment = '', string $link = null, string $createdBy, string $userId) {
+        $wish = new Wish();	
         $wish->setTitle($title);
         $wish->setUserId($userId);
         $wish->setComment($comment);
         $wish->setLink($link);
+        $wish->setCreatedBy($createdBy);
+        $wish->setCreatedAt((new \DateTime('now'))->format('Y-m-d H:i:s'));
         return $this->mapper->insert($wish);
     }
 
-    public function update(int $id, string $title, string $userId) {
+    public function update(int $id, string $title, string $userId, string $targetUser) {
         try {
             $wish = $this->mapper->find($id, $userId);
             $wish->setTitle($title);
             $wish->setComment($comment);
             $wish->setLink($link);
+            $wish->setUserId($targetUser);
             return $this->mapper->update($wish);
         } catch(Exception $e) {
             $this->handleException($e);
@@ -74,5 +81,4 @@ class WishService {
             $this->handleException($e);
         }
     }
-
 }

@@ -11,6 +11,8 @@ class Wish extends Entity implements JsonSerializable {
     protected $userId;
     protected $comment;
     protected $link;
+    protected $createdAt;
+    protected $createdBy;
 
     public function jsonSerialize() {
         return [
@@ -18,6 +20,9 @@ class Wish extends Entity implements JsonSerializable {
             'title' => $this->title,
             'comment' => $this->comment,
             'link' => $this->link,
+            'created_at' => $this->createdAt,
+            'created_by' => $this->createdBy,
+            'user_id' => $this->userId,
         ];
     }
 }

@@ -4542,6 +4542,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4560,6 +4567,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       wishes: [],
+      allWishes: [],
       currentWishId: null,
       updating: false,
       loading: true
@@ -4646,6 +4654,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.$nextTick(function () {
         _this3.$refs.content.focus();
       });
+    },
+    openOverview: function openOverview() {
+      this.currentWishId = null;
     },
 
     /**
@@ -4740,7 +4751,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
 
     /**
-     * Update an existing wish on the server
+     * Update an existing winewWish on the server
      * @param {Object} wish Wish object
      */
     updateWish: function updateWish(wish) {
@@ -25125,6 +25136,16 @@ var render = function() {
               })
             : _vm._e(),
           _vm._v(" "),
+          !_vm.loading
+            ? _c("AppNavigationItem", {
+                attrs: {
+                  title: _vm.t("wishlist", "Overview"),
+                  disabled: false
+                },
+                on: { click: _vm.openOverview }
+              })
+            : _vm._e(),
+          _vm._v(" "),
           _c(
             "ul",
             _vm._l(_vm.wishes, function(wish) {
@@ -25231,19 +25252,41 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.currentWish.content,
-                    expression: "currentWish.content"
+                    value: _vm.currentWish.comment,
+                    expression: "currentWish.comment"
                   }
                 ],
-                ref: "content",
+                ref: "comment",
                 attrs: { disabled: _vm.updating },
-                domProps: { value: _vm.currentWish.content },
+                domProps: { value: _vm.currentWish.comment },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(_vm.currentWish, "content", $event.target.value)
+                    _vm.$set(_vm.currentWish, "comment", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.currentWish.link,
+                    expression: "currentWish.link"
+                  }
+                ],
+                ref: "link",
+                attrs: { disabled: _vm.updating },
+                domProps: { value: _vm.currentWish.link },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.currentWish, "link", $event.target.value)
                   }
                 }
               }),
