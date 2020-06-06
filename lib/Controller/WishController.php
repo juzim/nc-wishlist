@@ -15,18 +15,22 @@
 	/** @var string */
 	private $userId;
 
+    use Errors;
 
-     public function __construct(string $AppName, IRequest $request, WishService $service, $UserId){
+    public function __construct(string $AppName, IRequest $request, WishService $service, $UserId){
          parent::__construct($AppName, $request);
          $this->service = $service;
          $this->userId = $UserId;
      }
 
-     /**
-      * @NoAdminRequired
-      */
-     public function index() {
-        return new DataResponse($this->service->findAll($this->userId));
+    /**
+    * @NoAdminRequired
+    */
+    public function index() {
+        return new DataResponse([
+            "userId" => $this->userId,
+            "wishes" => $this->service->findAll($this->userId)
+        ]);
     }
 
     /**

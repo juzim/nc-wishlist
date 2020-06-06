@@ -20,8 +20,7 @@ class WishService {
     }
 
     public function findAll(string $userId) {
-        // $userIds = $this->mapper->getAllUserIdsWithWishes();
-        // print("==========================" . $userIds);
+        // $userIds = $this->mapper->getAllUserIdsWithWishes($userId);
         return $this->mapper->findAll($userId);
     }
 

@@ -8,11 +8,11 @@
 				button-class="icon-add"
 				@click="newWish" />
 
-			<AppNavigationItem  v-if="!loading"
-			:title="t('wishlist', 'Overview')"
+			<AppNavigationNew v-if="!loading"
+				:text="t('wishlist', 'Overview')"
 				:disabled="false"
 				@click="openOverview" />
-				
+
 			<ul>
 				<AppNavigationItem v-for="wish in wishes"
 					:key="wish.id"
@@ -25,7 +25,7 @@
 							@click="cancelNewWish(wish)">
 							{{ t('wishlist', 'Cancel wish creation') }}
 						</ActionButton>
-						<ActionButton v-else
+						<ActionButton v-if="wish.created_by === userId"
 							icon="icon-delete"
 							@click="deleteWish(wish)">
 							{{ t('wishlist', 'Delete wish') }}
@@ -40,17 +40,53 @@
 					v-model="currentWish.title"
 					type="text"
 					:disabled="updating">
+				<label for="comment">{{ t('wishlist', 'Comment') }}</label>
 				<textarea ref="comment" v-model="currentWish.comment" :disabled="updating" />
-				<textarea ref="link" v-model="currentWish.link" :disabled="updating" />
+				<label for="link">{{ t('wishlist', 'Link') }}</label>
+				<input ref="link" v-model="currentWish.link" :disabled="updating">
 				<input type="button"
 					class="primary"
 					:value="t('wishlist', 'Save')"
 					:disabled="updating || !savePossible"
 					@click="saveWish">
+				<input type="button"
+					class="primary"
+					:value="t('wishlist', 'Cancel')"
+					:disabled="updating"
+					@click="openOverview">
 			</div>
-			<div v-else id="emptycontent">
+			<!-- <div v-else id="emptycontent">
 				<div class="icon-file" />
 				<h2>{{ t('wishlist', 'Create a wish to get started') }}</h2>
+			</div> -->
+			<div v-else id="overview">
+				<div v-for="(list_wishes, list_userId) in wishesByUser"
+					:key="list_userId">
+					<h2>{{ list_userId }}</h2>
+
+					<div v-for="list_wish in list_wishes"
+						:key="list_wish.id"
+						class="wish-item">
+						<div>
+							<h3>
+								<span>{{ list_wish.title }}</span>
+								<a
+									v-if="list_wish.user_id === userId || list_wish.created_by === userId"
+									class="button"
+									@click="openWish(list_wish)">
+									edit
+								</a>
+							</h3>
+						</div>
+						<div>{{ t('wishlist', 'Added by') }} {{ list_wish.created_by }} on {{ list_wish.created_at }}</div>
+						<div v-if="list_wish.link">
+							<a :href="list_wish.link">{{ list_wish.link }}</a>
+						</div>
+						<div v-if="list_wish.comment">
+							<textarea ref="comment" v-model="list_wish.comment" readonly="true" />
+						</div>
+					</div>
+				</div>
 			</div>
 		</AppContent>
 	</div>
@@ -81,6 +117,8 @@ export default {
 			currentWishId: null,
 			updating: false,
 			loading: true,
+			userId: null,
+			wishesByUser: {},
 		}
 	},
 	computed: {
@@ -109,7 +147,23 @@ export default {
 	async mounted() {
 		try {
 			const response = await axios.get(OC.generateUrl('/apps/wishlist/wishes'))
-			this.wishes = response.data
+			const wishes = {}
+			console.debug(response.data.wishes.length)
+
+			for (let i = 0; i < response.data.wishes.length; i++) {
+				const wish = response.data.wishes[i]
+				if (wish.user_id in wishes) {
+					wishes[wish.user_id].push(wish)
+				} else {
+					wishes[wish.user_id] = [wish]
+				}
+			}
+			console.debug(wishes)
+
+			this.wishesByUser = wishes
+
+			this.wishes = response.data.wishes
+			this.userId = response.data.userId
 		} catch (e) {
 			console.error(e)
 			OCP.Toast.error(t('wishlist', 'Could not fetch wishes'))
@@ -238,5 +292,12 @@ export default {
 	textarea {
 		flex-grow: 1;
 		width: 100%;
+	}
+
+	.wish-item {
+		border: 1px solid gray;
+		padding: 10px;
+		margin-bottom: 20px;
+		border-radius: 5px;
 	}
 </style>

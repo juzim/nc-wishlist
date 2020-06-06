@@ -4549,6 +4549,42 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4570,7 +4606,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       allWishes: [],
       currentWishId: null,
       updating: false,
-      loading: true
+      loading: true,
+      userId: null,
+      wishesByUser: {}
     };
   },
   computed: {
@@ -4606,7 +4644,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var _this2 = this;
 
     return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var response;
+      var response, wishes, i, wish;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -4617,25 +4655,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             case 3:
               response = _context.sent;
-              _this2.wishes = response.data;
-              _context.next = 11;
+              wishes = {};
+              console.debug(response.data.wishes.length);
+
+              for (i = 0; i < response.data.wishes.length; i++) {
+                wish = response.data.wishes[i];
+
+                if (wish.user_id in wishes) {
+                  wishes[wish.user_id].push(wish);
+                } else {
+                  wishes[wish.user_id] = [wish];
+                }
+              }
+
+              console.debug(wishes);
+              _this2.wishesByUser = wishes;
+              _this2.wishes = response.data.wishes;
+              _this2.userId = response.data.userId;
+              _context.next = 17;
               break;
 
-            case 7:
-              _context.prev = 7;
+            case 13:
+              _context.prev = 13;
               _context.t0 = _context["catch"](0);
               console.error(_context.t0);
               OCP.Toast.error(t('wishlist', 'Could not fetch wishes'));
 
-            case 11:
+            case 17:
               _this2.loading = false;
 
-            case 12:
+            case 18:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[0, 7]]);
+      }, _callee, null, [[0, 13]]);
     }))();
   },
   methods: {
@@ -10551,7 +10605,7 @@ $({ global: true, forced: !USE_NATIVE_URL, sham: !DESCRIPTORS }, {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n#app-content > div[data-v-7ba5bd90] {\n\twidth: 100%;\n\theight: 100%;\n\tpadding: 20px;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex-grow: 1;\n}\ninput[type='text'][data-v-7ba5bd90] {\n\twidth: 100%;\n}\ntextarea[data-v-7ba5bd90] {\n\tflex-grow: 1;\n\twidth: 100%;\n}\n", ""]);
+exports.push([module.i, "\n#app-content > div[data-v-7ba5bd90] {\n\twidth: 100%;\n\theight: 100%;\n\tpadding: 20px;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex-grow: 1;\n}\ninput[type='text'][data-v-7ba5bd90] {\n\twidth: 100%;\n}\ntextarea[data-v-7ba5bd90] {\n\tflex-grow: 1;\n\twidth: 100%;\n}\n.wish-item[data-v-7ba5bd90] {\n\tborder: 1px solid gray;\n\tpadding: 10px;\n\tmargin-bottom: 20px;\n\tborder-radius: 5px;\n}\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -25137,11 +25191,8 @@ var render = function() {
             : _vm._e(),
           _vm._v(" "),
           !_vm.loading
-            ? _c("AppNavigationItem", {
-                attrs: {
-                  title: _vm.t("wishlist", "Overview"),
-                  disabled: false
-                },
+            ? _c("AppNavigationNew", {
+                attrs: { text: _vm.t("wishlist", "Overview"), disabled: false },
                 on: { click: _vm.openOverview }
               })
             : _vm._e(),
@@ -25191,7 +25242,10 @@ var render = function() {
                               )
                             ]
                           )
-                        : _c(
+                        : _vm._e(),
+                      _vm._v(" "),
+                      wish.created_by === _vm.userId
+                        ? _c(
                             "ActionButton",
                             {
                               attrs: { icon: "icon-delete" },
@@ -25209,6 +25263,7 @@ var render = function() {
                               )
                             ]
                           )
+                        : _vm._e()
                     ],
                     1
                   )
@@ -25247,6 +25302,10 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
+              _c("label", { attrs: { for: "comment" } }, [
+                _vm._v(_vm._s(_vm.t("wishlist", "Comment")))
+              ]),
+              _vm._v(" "),
               _c("textarea", {
                 directives: [
                   {
@@ -25269,7 +25328,11 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _c("textarea", {
+              _c("label", { attrs: { for: "link" } }, [
+                _vm._v(_vm._s(_vm.t("wishlist", "Link")))
+              ]),
+              _vm._v(" "),
+              _c("input", {
                 directives: [
                   {
                     name: "model",
@@ -25299,17 +25362,116 @@ var render = function() {
                   disabled: _vm.updating || !_vm.savePossible
                 },
                 on: { click: _vm.saveWish }
+              }),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "primary",
+                attrs: {
+                  type: "button",
+                  value: _vm.t("wishlist", "Cancel"),
+                  disabled: _vm.updating
+                },
+                on: { click: _vm.openOverview }
               })
             ])
-          : _c("div", { attrs: { id: "emptycontent" } }, [
-              _c("div", { staticClass: "icon-file" }),
-              _vm._v(" "),
-              _c("h2", [
-                _vm._v(
-                  _vm._s(_vm.t("wishlist", "Create a wish to get started"))
+          : _c(
+              "div",
+              { attrs: { id: "overview" } },
+              _vm._l(_vm.wishesByUser, function(list_wishes, list_userId) {
+                return _c(
+                  "div",
+                  { key: list_userId },
+                  [
+                    _c("h2", [_vm._v(_vm._s(list_userId))]),
+                    _vm._v(" "),
+                    _vm._l(list_wishes, function(list_wish) {
+                      return _c(
+                        "div",
+                        { key: list_wish.id, staticClass: "wish-item" },
+                        [
+                          _c("div", [
+                            _c("h3", [
+                              _c("span", [_vm._v(_vm._s(list_wish.title))]),
+                              _vm._v(" "),
+                              list_wish.user_id === _vm.userId ||
+                              list_wish.created_by === _vm.userId
+                                ? _c(
+                                    "a",
+                                    {
+                                      staticClass: "button",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.openWish(list_wish)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n\t\t\t\t\t\t\t\tedit\n\t\t\t\t\t\t\t"
+                                      )
+                                    ]
+                                  )
+                                : _vm._e()
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", [
+                            _vm._v(
+                              _vm._s(_vm.t("wishlist", "Added by")) +
+                                " " +
+                                _vm._s(list_wish.created_by) +
+                                " on " +
+                                _vm._s(list_wish.created_at)
+                            )
+                          ]),
+                          _vm._v(" "),
+                          list_wish.link
+                            ? _c("div", [
+                                _c("a", { attrs: { href: list_wish.link } }, [
+                                  _vm._v(_vm._s(list_wish.link))
+                                ])
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          list_wish.comment
+                            ? _c("div", [
+                                _c("textarea", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: list_wish.comment,
+                                      expression: "list_wish.comment"
+                                    }
+                                  ],
+                                  ref: "comment",
+                                  refInFor: true,
+                                  attrs: { readonly: "true" },
+                                  domProps: { value: list_wish.comment },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        list_wish,
+                                        "comment",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
+                              ])
+                            : _vm._e()
+                        ]
+                      )
+                    })
+                  ],
+                  2
                 )
-              ])
-            ])
+              }),
+              0
+            )
       ])
     ],
     1

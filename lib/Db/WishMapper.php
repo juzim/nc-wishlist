@@ -30,28 +30,13 @@ class WishMapper extends QBMapper {
         $qb->select('*')
            ->from($this->getTableName())
            ->where(
-            $qb->expr()->eq('user_id', $qb->createNamedParameter($userId))
+            $qb->expr()->orX(
+                $qb->expr()->neq('user_id', $qb->createNamedParameter($userId)),
+                $qb->expr()->eq('created_by', $qb->createNamedParameter($userId))
+            
+            )   
            );
 
         return $this->findEntities($qb);
     }
-
-    // public function getAllUserIdsWithWishes($userId) {
-    //     $qb = $this->db->getQueryBuilder();
-
-    //     $qb->select('user_id')
-    //         ->distinct()
-    //         ->from($this->getTableName())
-    //         ->where(
-    //             $qb->expr()->not(
-    //                 $qb->expr()->andX(
-    //                     $qb->expr()->eq('user_id', $qb->createNamedParameter($userId)),
-    //                     $qb->expr()->neq('created_by', $qb->createNamedParameter($userId))
-    //                 )
-    //             )
-    //         )
-        
-    //     return $this->findEntities($qb);
-    // }
-
 }
