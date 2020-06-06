@@ -62,8 +62,12 @@
 			<div v-else id="overview">
 				<div v-for="(list_wishes, list_userId) in wishesByUser"
 					:key="list_userId">
-					<h2>{{ list_userId }}</h2>
-
+					<span>
+						<Avatar :user="list_userId" />
+					</span>
+					<span>
+						{{ list_userId }}
+					</span>
 					<div v-for="list_wish in list_wishes"
 						:key="list_wish.id"
 						class="wish-item">
@@ -75,6 +79,13 @@
 									class="button"
 									@click="openWish(list_wish)">
 									edit
+								</a>
+								<a
+									v-if="list_wish.user_id === userId || list_wish.created_by === userId"
+									class="button"
+									icon="icon-delete"
+									@click="openWish(list_wish)">
+									delete
 								</a>
 							</h3>
 						</div>
@@ -98,8 +109,8 @@ import AppContent from '@nextcloud/vue/dist/Components/AppContent'
 import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
 import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
 import AppNavigationNew from '@nextcloud/vue/dist/Components/AppNavigationNew'
-
 import axios from '@nextcloud/axios'
+import Avatar from '@nextcloud/vue/dist/Components/Avatar'
 
 export default {
 	name: 'App',
@@ -109,6 +120,7 @@ export default {
 		AppNavigation,
 		AppNavigationItem,
 		AppNavigationNew,
+		Avatar,
 	},
 	data: function() {
 		return {
