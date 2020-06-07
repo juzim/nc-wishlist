@@ -8,6 +8,7 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
 use OCA\Wishlist\Db\Wish;
 use OCA\Wishlist\Db\WishMapper;
+use OCA\Wishlist\Service\NotAllowedException;
 
 
 class WishService {
@@ -26,7 +27,8 @@ class WishService {
 
     private function handleException ($e) {
         if ($e instanceof DoesNotExistException ||
-            $e instanceof MultipleObjectsReturnedException) {
+            $e instanceof MultipleObjectsReturnedException ||
+            $e instanceof NotAllowedException) {
             throw new NotFoundException($e->getMessage());
         } else {
             throw $e;
@@ -65,14 +67,49 @@ class WishService {
         return $this->mapper->insert($wish);
     }
 
-    public function update(int $id, string $title, string $comment, string $userId, string $targetUser, string $link, string $price = NULL) {
+    public function update(
+        int $id, 
+        string $title, 
+        string $comment, 
+        string $userId, 
+        string $targetUser, 
+        string $link = NULL, 
+        string $price = NULL,
+        string $grabbedBy = NULL
+    ) {
         try {
-            $wish = $this->mapper->find($id, $userId);
-            $wish->setTitle($title);
-            $wish->setComment($comment);
-            $wish->setLink($link);
-            $wish->setUserId($targetUser);
-            $wish->setPrice($price);
+            $wish = $this->mapper->findGlobal($id);
+
+            if ($wish->getGrabbedBy() !== $grabbedBy) {
+                $wish = $this->mapper->findGlobal($id);
+                if ($grabbedBy && $wish->getGrabbedBy()) {
+                    throw new NotAllowedException('Wish is already grabbed');
+                }
+
+                if ($grabbedBy && $wish->getUserId === $userId) {
+                    throw new NotAllowedException('Cannot grap your own wish');
+                }
+
+                if (!$grabbedBy && $wish->getGrabbedBy() !== $userId) {
+                    throw new NotAllowedException('Wish is not grabbed by another user');
+                }
+
+                $wish->setGrabbedBy($grabbedBy);
+            } else {  
+                if ($wish->getCreatedBy() !== $userId) {
+                    throw new NotAllowedException('Wish not owned by user');
+                }
+                $wish->setTitle($title);
+                $wish->setComment($comment);
+                $wish->setLink($link);
+                $wish->setUserId($targetUser);
+                $wish->setPrice($price);
+
+            }
+
+            
+            
+            
             return $this->mapper->update($wish);
         } catch(Exception $e) {
             $this->handleException($e);

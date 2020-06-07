@@ -66,11 +66,19 @@
      * @param string $link
      * @param string $userId
      * @param string $price
+     * @param string $grabbedBy
      */
-    public function update(int $id, string $title, string $comment = '', string $link = NULL, $userId, string $price = NULL) {
-        \OC::$server->getLogger()->error($userId);
-        return $this->handleNotFound(function () use ($id, $title, $comment, $link, $userId, $price) {
-            return $this->service->update($id, $title, $comment, $this->userId, $userId, $link, $price);
+    public function update(
+        int $id, 
+        string $title, 
+        string $comment = '', 
+        string $link = NULL, 
+        $userId, 
+        string $price = NULL, 
+        string $grabbedBy = NULL
+    ) {
+        return $this->handleNotFound(function () use ($id, $title, $comment, $link, $userId, $price, $grabbedBy) {
+            return $this->service->update($id, $title, $comment, $this->userId, $userId, $link, $price, $grabbedBy);
         });
     }
 

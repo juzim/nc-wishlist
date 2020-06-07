@@ -13,7 +13,12 @@
 				:disabled="false"
 				@click="openOverview" />
 
-			<ul>
+			<!-- <AppNavigationNew v-if="!loading"
+				:text="t('wishlist', 'Your wishes')"
+				:disabled="false"
+				@click="openOwnWishes" /> -->
+
+			<!-- <ul>
 				<AppNavigationItem v-for="wish in wishes"
 					:key="wish.id"
 					:title="wish.title ? wish.title : t('wishlist', 'New wish')"
@@ -32,7 +37,7 @@
 						</ActionButton>
 					</template>
 				</AppNavigationItem>
-			</ul>
+			</ul> -->
 		</AppNavigation>
 		<AppContent>
 			<div v-if="currentWish">
@@ -93,12 +98,33 @@
 								</a>
 							</h3>
 						</div>
+						<div v-if="list_wish.userId !== userId">
+							<div v-if="list_wish.grabbedBy && list_wish.grabbedBy !== userId">
+								<input
+									type="button"
+									:value="t('wishlist', 'Grabbed by ' + list_wish.grabbedBy)"
+									:disabled="true"
+									@click="grabWish(list_wish)">
+							</div>
+							<div v-else>
+								<input
+									type="button"
+									:class="!list_wish.grabbedBy ? 'primary' : ''"
+									:value="!list_wish.grabbedBy ? t('wishlist', 'Grab') : t('wishlist', 'Ungrab')"
+									:disabled="updating"
+									@click="grabWish(list_wish)">
+							</div>
+						</div>
 						<div>{{ t('wishlist', 'Added by') }} {{ list_wish.createdBy }} on {{ list_wish.createdAt }}</div>
 						<div v-if="list_wish.price" :class="price">
 							{{ list_wish.price }}
 						</div>
 						<div v-if="list_wish.link">
-							<a :href="list_wish.link">{{ list_wish.link }}</a>
+							<a
+								:href="list_wish.link"
+								target="_blank">
+								{{ list_wish.link }}
+							</a>
 						</div>
 						<div v-if="list_wish.comment">
 							<textarea ref="comment" v-model="list_wish.comment" readonly="true" />
@@ -111,10 +137,10 @@
 </template>
 
 <script>
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+// import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 import AppContent from '@nextcloud/vue/dist/Components/AppContent'
 import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
-import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
+// import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
 import AppNavigationNew from '@nextcloud/vue/dist/Components/AppNavigationNew'
 import axios from '@nextcloud/axios'
 import Avatar from '@nextcloud/vue/dist/Components/Avatar'
@@ -122,10 +148,10 @@ import Avatar from '@nextcloud/vue/dist/Components/Avatar'
 export default {
 	name: 'App',
 	components: {
-		ActionButton,
+		// ActionButton,
 		AppContent,
 		AppNavigation,
-		AppNavigationItem,
+		// AppNavigationItem,
 		AppNavigationNew,
 		Avatar,
 	},
@@ -138,6 +164,7 @@ export default {
 			loading: true,
 			userId: null,
 			wishesByUser: {},
+			// ownWshes: {},
 		}
 	},
 	computed: {
@@ -215,6 +242,20 @@ export default {
 			} else {
 				this.updateWish(this.currentWish)
 			}
+		},
+		/**
+		 * Update an existing winewWish on the server
+		 * @param {Object} wish Wish object
+		 */
+		grabWish(wish) {
+			if (wish.grabbedBy) {
+				wish.grabbedBy = null
+			} else {
+				wish.grabbedBy = this.userId
+			}
+
+			this.updateWish(wish)
+			// this.wishesByUser[wish.userId].find()
 		},
 		/**
 		 * Create a new wish and focus the wish content field automatically
