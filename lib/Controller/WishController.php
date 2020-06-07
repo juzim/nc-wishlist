@@ -48,14 +48,13 @@
      * @NoAdminRequired
      *
      * @param string $title
-     * @param string $content
+     * @param string $comment
      * @param string $link
+     * @param string $targetUser
+     * @param string $price
      */
-    // public function create(string $title, string $content = '', string $link = null, string $targetUser) {
-        // return $this->service->create($title, $content, $link, $this->userId, $targetUser);
-    // }
-    public function create(string $title, string $content = '', string $link = null) {
-        return $this->service->create($title, $content, $link, $this->userId, $this->userId);
+    public function create(string $title, string $comment = '', string $link = NULL, string $targetUser, string $price = NULL) {
+        return $this->service->create($title, $comment, $link, $this->userId, $targetUser, $price);
     }        
 
     /**
@@ -63,11 +62,15 @@
      *
      * @param int $id
      * @param string $title
-     * @param string $content
+     * @param string $comment
+     * @param string $link
+     * @param string $userId
+     * @param string $price
      */
-    public function update(int $id, string $title, string $comment = '', string $link = NULL, $targetUser) {
-        return $this->handleNotFound(function () use ($id, $title, $comment, $link) {
-            return $this->service->update($id, $title, $comment, $link, $targetUser);
+    public function update(int $id, string $title, string $comment = '', string $link = NULL, $userId, string $price = NULL) {
+        \OC::$server->getLogger()->error($userId);
+        return $this->handleNotFound(function () use ($id, $title, $comment, $link, $userId, $price) {
+            return $this->service->update($id, $title, $comment, $this->userId, $userId, $link, $price);
         });
     }
 
@@ -81,5 +84,4 @@
             return $this->service->delete($id, $this->userId);
         });
     }
-
 }

@@ -5,7 +5,7 @@
     <name>Wishlist</name>
     <summary>A wishlist where users can organize and share present ideas</summary>
     <description><![CDATA[Users can add wishes for themselves or ideas for presents for other users.]]></description>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <licence>agpl</licence>
     <author mail="julianzimmermann@gmail.com" >Julian Zimmermann</author>
     <namespace>Wishlist</namespace>

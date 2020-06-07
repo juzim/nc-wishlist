@@ -47,24 +47,32 @@ class WishService {
         }
     }
 
-    public function create(string $title, string $comment = '', string $link = null, string $createdBy, string $userId) {
+    public function create(
+        string $title, 
+        string $comment = '', 
+        string $link = null, 
+        string $createdBy, 
+        string $userId,
+        string $price) {
         $wish = new Wish();	
         $wish->setTitle($title);
         $wish->setUserId($userId);
         $wish->setComment($comment);
         $wish->setLink($link);
+        $wish->setPrice($price);
         $wish->setCreatedBy($createdBy);
         $wish->setCreatedAt((new \DateTime('now'))->format('Y-m-d H:i:s'));
         return $this->mapper->insert($wish);
     }
 
-    public function update(int $id, string $title, string $userId, string $targetUser) {
+    public function update(int $id, string $title, string $comment, string $userId, string $targetUser, string $link, string $price = NULL) {
         try {
             $wish = $this->mapper->find($id, $userId);
             $wish->setTitle($title);
             $wish->setComment($comment);
             $wish->setLink($link);
             $wish->setUserId($targetUser);
+            $wish->setPrice($price);
             return $this->mapper->update($wish);
         } catch(Exception $e) {
             $this->handleException($e);

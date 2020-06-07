@@ -18,7 +18,7 @@ class WishMapper extends QBMapper {
                              ->where(
                                      $qb->expr()->eq('id', $qb->createNamedParameter($id))
                              )->andWhere(
-             $qb->expr()->eq('user_id', $qb->createNamedParameter($userId))
+             $qb->expr()->eq('created_by', $qb->createNamedParameter($userId))
            );
 
         return $this->findEntity($qb);

@@ -4697,6 +4697,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4747,7 +4754,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
      * @returns {Boolean}
      */
     savePossible: function savePossible() {
-      return this.currentWish && this.currentWish.title !== '';
+      return this.currentWish && this.currentWish.title !== '' && this.currentWish.user_id !== '';
     }
   },
 
@@ -4770,40 +4777,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             case 3:
               response = _context.sent;
               wishes = {};
-              console.debug(response.data.wishes.length);
 
               for (i = 0; i < response.data.wishes.length; i++) {
                 wish = response.data.wishes[i];
 
-                if (wish.user_id in wishes) {
-                  wishes[wish.user_id].push(wish);
+                if (wish.userId in wishes) {
+                  wishes[wish.userId].push(wish);
                 } else {
-                  wishes[wish.user_id] = [wish];
+                  wishes[wish.userId] = [wish];
                 }
               }
 
-              console.debug(wishes);
               _this2.wishesByUser = wishes;
               _this2.wishes = response.data.wishes;
               _this2.userId = response.data.userId;
-              _context.next = 17;
+              _context.next = 15;
               break;
 
-            case 13:
-              _context.prev = 13;
+            case 11:
+              _context.prev = 11;
               _context.t0 = _context["catch"](0);
               console.error(_context.t0);
               OCP.Toast.error(t('wishlist', 'Could not fetch wishes'));
 
-            case 17:
+            case 15:
               _this2.loading = false;
 
-            case 18:
+            case 16:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[0, 13]]);
+      }, _callee, null, [[0, 11]]);
     }))();
   },
   methods: {
@@ -4852,7 +4857,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.wishes.push({
           id: -1,
           title: '',
-          content: ''
+          comment: '',
+          price: '',
+          targetUser: ''
         });
         this.$nextTick(function () {
           _this4.$refs.title.focus();
@@ -4897,24 +4904,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this5.$set(_this5.wishes, index, response.data);
 
                 _this5.currentWishId = response.data.id;
-                _context2.next = 14;
+                OCP.Toast.success(t('wishlist', 'Wish created'));
+                _context2.next = 15;
                 break;
 
-              case 10:
-                _context2.prev = 10;
+              case 11:
+                _context2.prev = 11;
                 _context2.t0 = _context2["catch"](1);
                 console.error(_context2.t0);
                 OCP.Toast.error(t('wishlist', 'Could not create the wish'));
 
-              case 14:
-                _this5.updating = false;
-
               case 15:
+                _this5.updating = false;
+                _this5.currentWishId = null;
+
+              case 17:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[1, 10]]);
+        }, _callee2, null, [[1, 11]]);
       }))();
     },
 
@@ -4936,24 +4945,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5___default.a.put(OC.generateUrl("/apps/wishlist/wishes/".concat(wish.id)), wish);
 
               case 4:
-                _context3.next = 10;
+                _this6.currentWishId = null;
+                OCP.Toast.success(t('wishlist', 'Wish updated'));
+                _context3.next = 12;
                 break;
 
-              case 6:
-                _context3.prev = 6;
+              case 8:
+                _context3.prev = 8;
                 _context3.t0 = _context3["catch"](1);
                 console.error(_context3.t0);
                 OCP.Toast.error(t('wishlist', 'Could not update the wish'));
 
-              case 10:
+              case 12:
                 _this6.updating = false;
 
-              case 11:
+              case 13:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, null, [[1, 6]]);
+        }, _callee3, null, [[1, 8]]);
       }))();
     },
 
@@ -27362,7 +27373,7 @@ var render = function() {
                           )
                         : _vm._e(),
                       _vm._v(" "),
-                      wish.created_by === _vm.userId
+                      wish.createdBy === _vm.userId
                         ? _c(
                             "ActionButton",
                             {
@@ -27472,6 +27483,58 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
+              _c("label", { attrs: { for: "price" } }, [
+                _vm._v(_vm._s(_vm.t("wishlist", "Price")))
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.currentWish.price,
+                    expression: "currentWish.price"
+                  }
+                ],
+                ref: "price",
+                attrs: { disabled: _vm.updating },
+                domProps: { value: _vm.currentWish.price },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.currentWish, "price", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("label", { attrs: { for: "userId" } }, [
+                _vm._v(_vm._s(_vm.t("wishlist", "For")))
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.currentWish.userId,
+                    expression: "currentWish.userId"
+                  }
+                ],
+                ref: "userId",
+                attrs: { disabled: _vm.updating },
+                domProps: { value: _vm.currentWish.userId },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.currentWish, "userId", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
               _c("input", {
                 staticClass: "primary",
                 attrs: {
@@ -27522,7 +27585,7 @@ var render = function() {
                               _c("span", [_vm._v(_vm._s(list_wish.title))]),
                               _vm._v(" "),
                               list_wish.user_id === _vm.userId ||
-                              list_wish.created_by === _vm.userId
+                              list_wish.createdBy === _vm.userId
                                 ? _c(
                                     "a",
                                     {
@@ -27542,7 +27605,7 @@ var render = function() {
                                 : _vm._e(),
                               _vm._v(" "),
                               list_wish.user_id === _vm.userId ||
-                              list_wish.created_by === _vm.userId
+                              list_wish.createdBy === _vm.userId
                                 ? _c(
                                     "a",
                                     {
@@ -27550,7 +27613,7 @@ var render = function() {
                                       attrs: { icon: "icon-delete" },
                                       on: {
                                         click: function($event) {
-                                          return _vm.openWish(list_wish)
+                                          return _vm.deleteWish(list_wish)
                                         }
                                       }
                                     },
@@ -27568,11 +27631,21 @@ var render = function() {
                             _vm._v(
                               _vm._s(_vm.t("wishlist", "Added by")) +
                                 " " +
-                                _vm._s(list_wish.created_by) +
+                                _vm._s(list_wish.createdBy) +
                                 " on " +
-                                _vm._s(list_wish.created_at)
+                                _vm._s(list_wish.createdAt)
                             )
                           ]),
+                          _vm._v(" "),
+                          list_wish.price
+                            ? _c("div", { class: _vm.price }, [
+                                _vm._v(
+                                  "\n\t\t\t\t\t\t" +
+                                    _vm._s(list_wish.price) +
+                                    "\n\t\t\t\t\t"
+                                )
+                              ])
+                            : _vm._e(),
                           _vm._v(" "),
                           list_wish.link
                             ? _c("div", [

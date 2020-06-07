@@ -1,5 +1,5 @@
 <?php
-namespace OCA\NotesTutorial\Service;
+namespace OCA\Wishlist\Service;
 
 use Exception;
 

@@ -25,7 +25,7 @@
 							@click="cancelNewWish(wish)">
 							{{ t('wishlist', 'Cancel wish creation') }}
 						</ActionButton>
-						<ActionButton v-if="wish.created_by === userId"
+						<ActionButton v-if="wish.createdBy === userId"
 							icon="icon-delete"
 							@click="deleteWish(wish)">
 							{{ t('wishlist', 'Delete wish') }}
@@ -44,6 +44,10 @@
 				<textarea ref="comment" v-model="currentWish.comment" :disabled="updating" />
 				<label for="link">{{ t('wishlist', 'Link') }}</label>
 				<input ref="link" v-model="currentWish.link" :disabled="updating">
+				<label for="price">{{ t('wishlist', 'Price') }}</label>
+				<input ref="price" v-model="currentWish.price" :disabled="updating">
+				<label for="userId">{{ t('wishlist', 'For') }}</label>
+				<input ref="userId" v-model="currentWish.userId" :disabled="updating">
 				<input type="button"
 					class="primary"
 					:value="t('wishlist', 'Save')"
@@ -75,21 +79,24 @@
 							<h3>
 								<span>{{ list_wish.title }}</span>
 								<a
-									v-if="list_wish.user_id === userId || list_wish.created_by === userId"
+									v-if="list_wish.user_id === userId || list_wish.createdBy === userId"
 									class="button"
 									@click="openWish(list_wish)">
 									edit
 								</a>
 								<a
-									v-if="list_wish.user_id === userId || list_wish.created_by === userId"
+									v-if="list_wish.user_id === userId || list_wish.createdBy === userId"
 									class="button"
 									icon="icon-delete"
-									@click="openWish(list_wish)">
+									@click="deleteWish(list_wish)">
 									delete
 								</a>
 							</h3>
 						</div>
-						<div>{{ t('wishlist', 'Added by') }} {{ list_wish.created_by }} on {{ list_wish.created_at }}</div>
+						<div>{{ t('wishlist', 'Added by') }} {{ list_wish.createdBy }} on {{ list_wish.createdAt }}</div>
+						<div v-if="list_wish.price" :class="price">
+							{{ list_wish.price }}
+						</div>
 						<div v-if="list_wish.link">
 							<a :href="list_wish.link">{{ list_wish.link }}</a>
 						</div>
@@ -150,7 +157,7 @@ export default {
 		 * @returns {Boolean}
 		 */
 		savePossible() {
-			return this.currentWish && this.currentWish.title !== ''
+			return this.currentWish && this.currentWish.title !== '' && this.currentWish.user_id !== ''
 		},
 	},
 	/**
@@ -160,17 +167,15 @@ export default {
 		try {
 			const response = await axios.get(OC.generateUrl('/apps/wishlist/wishes'))
 			const wishes = {}
-			console.debug(response.data.wishes.length)
 
 			for (let i = 0; i < response.data.wishes.length; i++) {
 				const wish = response.data.wishes[i]
-				if (wish.user_id in wishes) {
-					wishes[wish.user_id].push(wish)
+				if (wish.userId in wishes) {
+					wishes[wish.userId].push(wish)
 				} else {
-					wishes[wish.user_id] = [wish]
+					wishes[wish.userId] = [wish]
 				}
 			}
-			console.debug(wishes)
 
 			this.wishesByUser = wishes
 
@@ -222,7 +227,9 @@ export default {
 				this.wishes.push({
 					id: -1,
 					title: '',
-					content: '',
+					comment: '',
+					price: '',
+					targetUser: '',
 				})
 				this.$nextTick(() => {
 					this.$refs.title.focus()
@@ -247,11 +254,13 @@ export default {
 				const index = this.wishes.findIndex((match) => match.id === this.currentWishId)
 				this.$set(this.wishes, index, response.data)
 				this.currentWishId = response.data.id
+				OCP.Toast.success(t('wishlist', 'Wish created'))
 			} catch (e) {
 				console.error(e)
 				OCP.Toast.error(t('wishlist', 'Could not create the wish'))
 			}
 			this.updating = false
+			this.currentWishId = null
 		},
 		/**
 		 * Update an existing winewWish on the server
@@ -261,6 +270,8 @@ export default {
 			this.updating = true
 			try {
 				await axios.put(OC.generateUrl(`/apps/wishlist/wishes/${wish.id}`), wish)
+				this.currentWishId = null
+				OCP.Toast.success(t('wishlist', 'Wish updated'))
 			} catch (e) {
 				console.error(e)
 				OCP.Toast.error(t('wishlist', 'Could not update the wish'))
