@@ -2,6 +2,7 @@
  namespace OCA\Wishlist\Controller;
 
  use OCP\IRequest;
+ use OCP\IUserManager;
  use OCP\AppFramework\Controller;
  use OCA\Wishlist\Service\WishService; 
  use OCP\AppFramework\Http\DataResponse;
@@ -12,24 +13,47 @@
     /** @var WishService */
 	private $service;
 
+
+    /** @var IUserManager */
+	private $userManager;
+
 	/** @var string */
 	private $userId;
 
     use Errors;
 
-    public function __construct(string $AppName, IRequest $request, WishService $service, $UserId){
+    public function __construct(string $AppName, IRequest $request, WishService $service, IUserManager $userManager, $UserId){
          parent::__construct($AppName, $request);
          $this->service = $service;
          $this->userId = $UserId;
+         $this->userManager = $userManager;
      }
 
     /**
     * @NoAdminRequired
     */
     public function index() {
+        $wishes = $this->service->findAll($this->userId);
+
+        $ids = [];
+
+        foreach ($wishes as $wish) {
+            $ids[] = $wish->getUserId();
+        }
+
+        $users = [];
+        foreach (array_unique($ids) as $id) {
+            $user = $this->userManager->get($id);
+            $users[$id] = [
+                "uid" => $user->getUID(),
+                "name" => $user->getDisplayName(),
+            ];
+        }
+
         return new DataResponse([
             "userId" => $this->userId,
-            "wishes" => $this->service->findAll($this->userId)
+            "wishes" => $wishes,
+            "users" => $users,
         ]);
     }
 
@@ -50,11 +74,11 @@
      * @param string $title
      * @param string $comment
      * @param string $link
-     * @param string $targetUser
+     * @param string $userId
      * @param string $price
      */
-    public function create(string $title, string $comment = '', string $link = NULL, string $targetUser, string $price = NULL) {
-        return $this->service->create($title, $comment, $link, $this->userId, $targetUser, $price);
+    public function create(string $title, string $comment = '', string $link = NULL, string $userId, string $price = NULL) {
+        return $this->service->create($title, $comment, $link, $this->userId, $userId, $price);
     }        
 
     /**

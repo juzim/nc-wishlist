@@ -8,11 +8,6 @@
 				button-class="icon-add"
 				@click="newWish" />
 
-			<AppNavigationNew v-if="!loading"
-				:text="t('wishlist', 'Overview')"
-				:disabled="false"
-				@click="openOverview" />
-
 			<!-- <AppNavigationNew v-if="!loading"
 				:text="t('wishlist', 'Your wishes')"
 				:disabled="false"
@@ -71,63 +66,78 @@
 			<div v-else id="overview">
 				<div v-for="(list_wishes, list_userId) in wishesByUser"
 					:key="list_userId">
-					<span>
-						<Avatar :user="list_userId" />
+					<span class="list-user-avatar">
+						<Avatar
+							:user="list_userId"
+							:displayName="users[list_userId].name" />
 					</span>
-					<span>
-						{{ list_userId }}
-					</span>
+					<h2>
+						{{ users[list_userId].name }}
+					</h2>
 					<div v-for="list_wish in list_wishes"
 						:key="list_wish.id"
 						class="wish-item">
-						<div>
-							<h3>
-								<span>{{ list_wish.title }}</span>
-								<a
-									v-if="list_wish.user_id === userId || list_wish.createdBy === userId"
+						<div
+							v-if="list_wish.userId !== userId"
+							:class="'wish-status ' + ( list_wish.grabbedBy ? (list_wish.grabbedBy === userId ? 'bg-green' : 'bg-red') : '')">
+							<span
+								v-if="list_wish.grabbedBy && list_wish.grabbedBy !== userId">
+								{{ t('wishlist', 'Grabbed by ' + users[list_wish.grabbedBy].name) }}
+							</span>
+							<span v-else-if="list_wish.grabbedBy === userId">
+								{{ t('wishlist', 'Grabbed by you') }}
+								<span
 									class="button"
-									@click="openWish(list_wish)">
-									edit
-								</a>
-								<a
-									v-if="list_wish.user_id === userId || list_wish.createdBy === userId"
-									class="button"
-									icon="icon-delete"
-									@click="deleteWish(list_wish)">
-									delete
-								</a>
-							</h3>
-						</div>
-						<div v-if="list_wish.userId !== userId">
-							<div v-if="list_wish.grabbedBy && list_wish.grabbedBy !== userId">
-								<input
-									type="button"
-									:value="t('wishlist', 'Grabbed by ' + list_wish.grabbedBy)"
-									:disabled="true"
 									@click="grabWish(list_wish)">
-							</div>
-							<div v-else>
-								<input
-									type="button"
-									:class="!list_wish.grabbedBy ? 'primary' : ''"
-									:value="!list_wish.grabbedBy ? t('wishlist', 'Grab') : t('wishlist', 'Ungrab')"
-									:disabled="updating"
+									{{ t('wishlist', 'Ungrab') }}
+								</span>
+							</span>
+							<span v-else>
+								{{ t('wishlist', 'Free!') }}
+								<span class="button"
+									:primary="true"
 									@click="grabWish(list_wish)">
+									{{ t('wishlist', 'Grab') }}
+								</span>
+							</span>
+						</div>
+						<div class="wish-container">
+							<div class="wish-details">
+								<div>
+									<h3>{{ list_wish.title }}</h3>
+									<div>{{ t('wishlist', 'Added by') }} {{ users[list_wish.createdBy].name }} on {{ list_wish.createdAt }}</div>
+								</div>
+								<div v-if="list_wish.price" :class="price">
+									{{ list_wish.price }}
+								</div>
+								<div v-if="list_wish.link">
+									<a
+										:href="list_wish.link"
+										target="_blank">
+										{{ list_wish.link }}
+									</a>
+								</div>
+								<div v-if="list_wish.comment">
+									<textarea ref="comment" v-model="list_wish.comment" readonly="true" />
+								</div>
 							</div>
-						</div>
-						<div>{{ t('wishlist', 'Added by') }} {{ list_wish.createdBy }} on {{ list_wish.createdAt }}</div>
-						<div v-if="list_wish.price" :class="price">
-							{{ list_wish.price }}
-						</div>
-						<div v-if="list_wish.link">
-							<a
-								:href="list_wish.link"
-								target="_blank">
-								{{ list_wish.link }}
-							</a>
-						</div>
-						<div v-if="list_wish.comment">
-							<textarea ref="comment" v-model="list_wish.comment" readonly="true" />
+							<div class="wish-actions">
+								<ul>
+									<li
+										v-if="list_wish.createdBy === userId"
+										class="button"
+										@click="openWish(list_wish)">
+										{{ t('wishlist', 'Edit') }}
+									</li>
+									<li
+										v-if="list_wish.createdBy === userId"
+										icon="icon-delete"
+										class="button"
+										@click="deleteWish(list_wish)">
+										{{ t('wishlist', 'Delete') }}
+									</li>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -164,6 +174,7 @@ export default {
 			loading: true,
 			userId: null,
 			wishesByUser: {},
+			users: {},
 			// ownWshes: {},
 		}
 	},
@@ -208,6 +219,7 @@ export default {
 
 			this.wishes = response.data.wishes
 			this.userId = response.data.userId
+			this.users = response.data.users
 		} catch (e) {
 			console.error(e)
 			OCP.Toast.error(t('wishlist', 'Could not fetch wishes'))
@@ -315,7 +327,7 @@ export default {
 				OCP.Toast.success(t('wishlist', 'Wish updated'))
 			} catch (e) {
 				console.error(e)
-				OCP.Toast.error(t('wishlist', 'Could not update the wish'))
+				OCP.Toast.error(t('wishlist', 'Could not update the wish: ' + e.response.data.message))
 			}
 			this.updating = false
 		},
@@ -360,8 +372,34 @@ export default {
 
 	.wish-item {
 		border: 1px solid gray;
-		padding: 10px;
 		margin-bottom: 20px;
 		border-radius: 5px;
+	}
+
+	.wish-container {
+		display: flex;
+	}
+
+	.wish-details {
+		padding: 10px;
+		width: 100%;
+	}
+
+	.wish-status {
+		border-bottom: 1px solid gray;
+		padding: 10px;
+	}
+
+	.bg-green {
+		background-color: darkseagreen;
+	}
+
+	.bg-red {
+		background-color: indianred;
+	}
+
+	.list-user-avatar {
+		float: left;
+		margin-right: 10px;
 	}
 </style>

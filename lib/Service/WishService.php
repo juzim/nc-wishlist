@@ -91,7 +91,7 @@ class WishService {
                 }
 
                 if (!$grabbedBy && $wish->getGrabbedBy() !== $userId) {
-                    throw new NotAllowedException('Wish is not grabbed by another user');
+                    throw new NotAllowedException('Wish is grabbed by another user');
                 }
 
                 $wish->setGrabbedBy($grabbedBy);
