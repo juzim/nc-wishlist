@@ -4292,6 +4292,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 
  // import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
@@ -23422,27 +23431,53 @@ var render = function() {
                 _vm._v(_vm._s(_vm.t("wishlist", "For")))
               ]),
               _vm._v(" "),
-              _c("input", {
-                directives: [
+              _c("div", { staticClass: "target-user" }, [
+                _c(
+                  "select",
                   {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.currentWish.userId,
-                    expression: "currentWish.userId"
-                  }
-                ],
-                ref: "userId",
-                attrs: { disabled: _vm.updating },
-                domProps: { value: _vm.currentWish.userId },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.currentWish.userId,
+                        expression: "currentWish.userId"
+                      }
+                    ],
+                    attrs: { disabled: _vm.updating },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.currentWish,
+                          "userId",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
                     }
-                    _vm.$set(_vm.currentWish, "userId", $event.target.value)
-                  }
-                }
-              }),
+                  },
+                  _vm._l(_vm.users, function(user) {
+                    return _c(
+                      "option",
+                      { key: user.uid, domProps: { value: user.uid } },
+                      [
+                        _vm._v(
+                          "\n\t\t\t\t\t\t" + _vm._s(user.name) + "\n\t\t\t\t\t"
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]),
               _vm._v(" "),
               _c("input", {
                 staticClass: "primary",

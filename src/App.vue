@@ -47,7 +47,16 @@
 				<label for="price">{{ t('wishlist', 'Price') }}</label>
 				<input ref="price" v-model="currentWish.price" :disabled="updating">
 				<label for="userId">{{ t('wishlist', 'For') }}</label>
-				<input ref="userId" v-model="currentWish.userId" :disabled="updating">
+				<div class="target-user">
+					<select v-model="currentWish.userId" :disabled="updating">
+						<option
+							v-for="user in users"
+							:key="user.uid"
+							:value="user.uid">
+							{{ user.name }}
+						</option>
+					</select>
+				</div>
 				<input type="button"
 					class="primary"
 					:value="t('wishlist', 'Save')"
