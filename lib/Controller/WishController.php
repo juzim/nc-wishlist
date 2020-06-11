@@ -33,36 +33,18 @@
     * @NoAdminRequired
     */
     public function index() {
-        $wishes = $this->service->findAll($this->userId);
-
-        $ids = [];
-
-        foreach ($wishes as $wish) {
-            if ($wish->getUserId()) {
-                $ids[] = $wish->getUserId();
-            }
-        }
-
+        $userEntitites = $this->userManager->search('');
         $users = [];
-        foreach (array_unique($ids) as $id) {
-            $user = $this->userManager->get($id);
-            if ($user) {
-                $users[$id] = [
-                    "uid" => $user->getUID(),
-                    "name" => $user->getDisplayName(),
-                ];
-            } else {
-                \OC::$server->getLogger()->warning("User [{$id}] not found");
-                $users[$id] = [
-                    "uid" => $id,
-                    "name" => $id,
-                ];
-            }
+        foreach ($userEntitites as $user) {
+            $users[$user->getUid()] = [
+                "uid" => $user->getUID(),
+                "name" => $user->getDisplayName(),
+            ];
         }
 
         return new DataResponse([
             "userId" => $this->userId,
-            "wishes" => $wishes,
+            "wishes" => $this->service->findAll($this->userId),
             "users" => $users,
             // "users" => $this->userManager->search(''),
         ]);
