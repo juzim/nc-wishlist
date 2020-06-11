@@ -53,7 +53,7 @@
 							v-for="user in users"
 							:key="user.uid"
 							:value="user.uid">
-							{{ user.name | capitalize }}
+							{{ user.name }}
 						</option>
 					</select>
 				</div>
@@ -82,8 +82,7 @@
 								:displayName="users[list_userId].name" />
 						</span>
 						<h2>
-							<!-- {{ users[list_userId].name }} -->
-							{{ list_userId | capitalize }}
+							{{ users[list_userId].name }}
 						</h2>
 					</div>
 					<div v-for="list_wish in list_wishes"
@@ -94,8 +93,7 @@
 							:class="'wish-status ' + ( list_wish.grabbedBy ? (list_wish.grabbedBy === userId ? 'bg-green' : 'bg-red') : '')">
 							<span
 								v-if="list_wish.grabbedBy && list_wish.grabbedBy !== userId">
-								{{ t('wishlist', 'Grabbed by ' + list_wish.grabbedBy) }}
-								<!-- {{ t('wishlist', 'Grabbed by ' + users[list_wish.grabbedBy].name) }} -->
+								{{ t('wishlist', 'Grabbed by ' + users[list_wish.grabbedBy].name) }}
 							</span>
 							<span v-else-if="list_wish.grabbedBy === userId">
 								{{ t('wishlist', 'Grabbed by you') }}
@@ -118,8 +116,7 @@
 							<div class="wish-details">
 								<div>
 									<h3>{{ list_wish.title }}</h3>
-									<div>{{ t('wishlist', 'Added by') }} {{ list_wish.createdBy }} on {{ list_wish.createdAt }}</div>
-									<!-- <div>{{ t('wishlist', 'Added by') }} {{ users[list_wish.createdBy].name }} on {{ list_wish.createdAt }}</div> -->
+									<div>{{ t('wishlist', 'Added by') }} {{ users[list_wish.createdBy].name }} on {{ list_wish.createdAt }}</div>
 								</div>
 								<div v-if="list_wish.price" :class="price">
 									{{ list_wish.price }}
@@ -413,7 +410,7 @@ export default {
 	}
 
 	.list-user {
-		display: flex;
+		display: block;
 	}
 
 	.list-user-avatar {
