@@ -2308,6 +2308,39 @@ function a(A,t,e){this.r=A,this.g=t,this.b=e}function i(A,t,e){var i=[];i.push(t
 
 /***/ }),
 
+/***/ "./node_modules/@nextcloud/vue/dist/Components/Popover.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/@nextcloud/vue/dist/Components/Popover.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(e,t){ true?module.exports=t():undefined}(window,(function(){return function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="/dist/",n(n.s=62)}({0:function(e,t,n){"use strict";function r(e,t,n,r,o,i,a,s){var u,c="function"==typeof e?e.options:e;if(t&&(c.render=t,c.staticRenderFns=n,c._compiled=!0),r&&(c.functional=!0),i&&(c._scopeId="data-v-"+i),a?(u=function(e){(e=e||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext)||"undefined"==typeof __VUE_SSR_CONTEXT__||(e=__VUE_SSR_CONTEXT__),o&&o.call(this,e),e&&e._registeredComponents&&e._registeredComponents.add(a)},c._ssrRegister=u):o&&(u=s?function(){o.call(this,this.$root.$options.shadowRoot)}:o),u)if(c.functional){c._injectStyles=u;var f=c.render;c.render=function(e,t){return u.call(t),f(e,t)}}else{var p=c.beforeCreate;c.beforeCreate=p?[].concat(p,u):[u]}return{exports:e,options:c}}n.d(t,"a",(function(){return r}))},1:function(e,t,n){"use strict";e.exports=function(e){var t=[];return t.toString=function(){return this.map((function(t){var n=function(e,t){var n=e[1]||"",r=e[3];if(!r)return n;if(t&&"function"==typeof btoa){var o=(a=r,s=btoa(unescape(encodeURIComponent(JSON.stringify(a)))),u="sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(s),"/*# ".concat(u," */")),i=r.sources.map((function(e){return"/*# sourceURL=".concat(r.sourceRoot||"").concat(e," */")}));return[n].concat(i).concat([o]).join("\n")}var a,s,u;return[n].join("\n")}(t,e);return t[2]?"@media ".concat(t[2]," {").concat(n,"}"):n})).join("")},t.i=function(e,n,r){"string"==typeof e&&(e=[[null,e,""]]);var o={};if(r)for(var i=0;i<this.length;i++){var a=this[i][0];null!=a&&(o[a]=!0)}for(var s=0;s<e.length;s++){var u=[].concat(e[s]);r&&o[u[0]]||(n&&(u[2]?u[2]="".concat(n," and ").concat(u[2]):u[2]=n),t.push(u))}},t}},128:function(e,t,n){"use strict";var r=n(48);n.n(r).a},129:function(e,t,n){(t=n(1)(!1)).push([e.i,".popover[data-v-71f013aa]{padding:0px !important}\n",""]),e.exports=t},2:function(e,t,n){"use strict";function r(e,t){for(var n=[],r={},o=0;o<t.length;o++){var i=t[o],a=i[0],s={id:e+":"+o,css:i[1],media:i[2],sourceMap:i[3]};r[a]?r[a].parts.push(s):n.push(r[a]={id:a,parts:[s]})}return n}n.r(t),n.d(t,"default",(function(){return l}));var o="undefined"!=typeof document;if("undefined"!=typeof DEBUG&&DEBUG&&!o)throw new Error("vue-style-loader cannot be used in a non-browser environment. Use { target: 'node' } in your Webpack config to indicate a server-rendering environment.");var i={},a=o&&(document.head||document.getElementsByTagName("head")[0]),s=null,u=0,c=!1,f=function(){},p=null,d="undefined"!=typeof navigator&&/msie [6-9]\b/.test(navigator.userAgent.toLowerCase());function l(e,t,n,o){c=n,p=o||{};var a=r(e,t);return v(a),function(t){for(var n=[],o=0;o<a.length;o++){var s=a[o];(u=i[s.id]).refs--,n.push(u)}t?v(a=r(e,t)):a=[];for(o=0;o<n.length;o++){var u;if(0===(u=n[o]).refs){for(var c=0;c<u.parts.length;c++)u.parts[c]();delete i[u.id]}}}}function v(e){for(var t=0;t<e.length;t++){var n=e[t],r=i[n.id];if(r){r.refs++;for(var o=0;o<r.parts.length;o++)r.parts[o](n.parts[o]);for(;o<n.parts.length;o++)r.parts.push(m(n.parts[o]));r.parts.length>n.parts.length&&(r.parts.length=n.parts.length)}else{var a=[];for(o=0;o<n.parts.length;o++)a.push(m(n.parts[o]));i[n.id]={id:n.id,refs:1,parts:a}}}}function h(){var e=document.createElement("style");return e.type="text/css",a.appendChild(e),e}function m(e){var t,n,r=document.querySelector('style[data-vue-ssr-id~="'+e.id+'"]');if(r){if(c)return f;r.parentNode.removeChild(r)}if(d){var o=u++;r=s||(s=h()),t=b.bind(null,r,o,!1),n=b.bind(null,r,o,!0)}else r=h(),t=_.bind(null,r),n=function(){r.parentNode.removeChild(r)};return t(e),function(r){if(r){if(r.css===e.css&&r.media===e.media&&r.sourceMap===e.sourceMap)return;t(e=r)}else n()}}var g,y=(g=[],function(e,t){return g[e]=t,g.filter(Boolean).join("\n")});function b(e,t,n,r){var o=n?"":r.css;if(e.styleSheet)e.styleSheet.cssText=y(t,o);else{var i=document.createTextNode(o),a=e.childNodes;a[t]&&e.removeChild(a[t]),a.length?e.insertBefore(i,a[t]):e.appendChild(i)}}function _(e,t){var n=t.css,r=t.media,o=t.sourceMap;if(r&&e.setAttribute("media",r),p.ssrId&&e.setAttribute("data-vue-ssr-id",t.id),o&&(n+="\n/*# sourceURL="+o.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(o))))+" */"),e.styleSheet)e.styleSheet.cssText=n;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(n))}}},3:function(e,t){e.exports=__webpack_require__(/*! v-tooltip */ "./node_modules/v-tooltip/dist/v-tooltip.esm.js")},48:function(e,t,n){var r=n(129);"string"==typeof r&&(r=[[e.i,r,""]]),r.locals&&(e.exports=r.locals);(0,n(2).default)("9ee2a826",r,!0,{})},55:function(e,t){},62:function(e,t,n){"use strict";n.r(t);var r={name:"Popover",components:{VPopover:n(3).VPopover}},o=(n(128),n(0)),i=n(55),a=n.n(i),s=Object(o.a)(r,(function(){var e=this.$createElement,t=this._self._c||e;return t("VPopover",this._g(this._b({staticClass:"popover"},"VPopover",this.$attrs,!1),this.$listeners),[this._t("trigger"),this._v(" "),t("template",{slot:"popover"},[this._t("default")],2)],2)}),[],!1,null,"71f013aa",null);"function"==typeof a.a&&a()(s);var u=s.exports;
+/**
+ * @copyright Copyright (c) 2019 Marco Ambrosini <marcoambrosini@pm.me>
+ *
+ * @author Marco Ambrosini <marcoambrosini@pm.me>
+ *
+ * @license GNU AGPL version 3 or any later version
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */t.default=u}})}));
+//# sourceMappingURL=Popover.js.map
+
+/***/ }),
+
 /***/ "./node_modules/@nextcloud/vue/dist/Components/UserBubble.js":
 /*!*******************************************************************!*\
   !*** ./node_modules/@nextcloud/vue/dist/Components/UserBubble.js ***!
@@ -4283,10 +4316,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _nextcloud_vue_dist_Components_Avatar__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_vue_dist_Components_Avatar__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _nextcloud_vue_dist_Components_UserBubble__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @nextcloud/vue/dist/Components/UserBubble */ "./node_modules/@nextcloud/vue/dist/Components/UserBubble.js");
 /* harmony import */ var _nextcloud_vue_dist_Components_UserBubble__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_vue_dist_Components_UserBubble__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _nextcloud_vue_dist_Components_Popover__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @nextcloud/vue/dist/Components/Popover */ "./node_modules/@nextcloud/vue/dist/Components/Popover.js");
+/* harmony import */ var _nextcloud_vue_dist_Components_Popover__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_vue_dist_Components_Popover__WEBPACK_IMPORTED_MODULE_6__);
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4486,6 +4529,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
   components: {
@@ -4495,7 +4539,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     // AppNavigationItem,
     AppNavigationNew: _nextcloud_vue_dist_Components_AppNavigationNew__WEBPACK_IMPORTED_MODULE_2___default.a,
     Avatar: _nextcloud_vue_dist_Components_Avatar__WEBPACK_IMPORTED_MODULE_4___default.a,
-    UserBubble: _nextcloud_vue_dist_Components_UserBubble__WEBPACK_IMPORTED_MODULE_5___default.a
+    UserBubble: _nextcloud_vue_dist_Components_UserBubble__WEBPACK_IMPORTED_MODULE_5___default.a,
+    Popover: _nextcloud_vue_dist_Components_Popover__WEBPACK_IMPORTED_MODULE_6___default.a
   },
   data: function data() {
     return {
@@ -11453,7 +11498,7 @@ $({ global: true, forced: !USE_NATIVE_URL, sham: !DESCRIPTORS }, {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n#app-content > div[data-v-7ba5bd90] {\n\twidth: 100%;\n\theight: 100%;\n\tpadding: 20px;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex-grow: 1;\n}\ninput[type='text'][data-v-7ba5bd90] {\n\twidth: 100%;\n}\ntextarea[data-v-7ba5bd90] {\n\tflex-grow: 1;\n\twidth: 100%;\n}\n.wish-item[data-v-7ba5bd90] {\n\tborder: 1px solid gray;\n\tmargin-bottom: 20px;\n\tborder-radius: 5px;\n}\n.wish-container[data-v-7ba5bd90] {\n\tdisplay: flex;\n}\n.wish-details[data-v-7ba5bd90] {\n\tpadding: 10px;\n\twidth: 100%;\n}\n.wish-status[data-v-7ba5bd90] {\n\tborder-bottom: 1px solid gray;\n\tpadding: 10px;\n}\n.bg-green[data-v-7ba5bd90] {\n\tbackground-color: darkseagreen;\n}\n.bg-red[data-v-7ba5bd90] {\n\tbackground-color: indianred;\n}\n.list-user[data-v-7ba5bd90] {\n\tdisplay: block;\n}\n.list-user-avatar[data-v-7ba5bd90] {\n\tfloat: left;\n\tmargin-right: 10px;\n}\n.price[data-v-7ba5bd90] {\n\tfloat: right;\n\twidth: 70px;\n}\n.wish-title[data-v-7ba5bd90] {\n\twidth: 100%;\n\tfont-size: 20px;\n}\na[data-v-7ba5bd90] {\n\tcolor: #0c76ff;\n\ttext-decoration: underline;\n}\n", ""]);
+exports.push([module.i, "\n#app-content > div[data-v-7ba5bd90] {\n\twidth: 100%;\n\theight: 100%;\n\tpadding: 20px;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex-grow: 1;\n}\ninput[type='text'][data-v-7ba5bd90] {\n\twidth: 100%;\n}\ntextarea[data-v-7ba5bd90] {\n\tflex-grow: 1;\n\twidth: 100%;\n}\n.wish-item[data-v-7ba5bd90] {\n\tborder: 1px solid gray;\n\tmargin-bottom: 20px;\n\tborder-radius: 5px;\n\tmax-width: 600px;\n}\n.wish-container[data-v-7ba5bd90] {\n\tdisplay: flex;\n}\n.wish-details[data-v-7ba5bd90] {\n\tpadding: 10px;\n\twidth: 100%;\n}\n.wish-status[data-v-7ba5bd90] {\n\tborder-bottom: 1px solid gray;\n\tpadding: 10px;\n}\n.bg-green[data-v-7ba5bd90] {\n\tbackground-color: darkseagreen;\n}\n.bg-red[data-v-7ba5bd90] {\n\tbackground-color: indianred;\n}\n.list-user[data-v-7ba5bd90] {\n\tdisplay: block;\n}\n.list-user-avatar[data-v-7ba5bd90] {\n\tfloat: left;\n\tmargin-right: 10px;\n}\n.price[data-v-7ba5bd90] {\n\tfloat: right;\n\twidth: 70px;\n}\n.wish-title[data-v-7ba5bd90] {\n\twidth: 100%;\n\tfont-size: 20px;\n}\na[data-v-7ba5bd90] {\n\tcolor: #0c76ff;\n\ttext-decoration: underline;\n}\n.wish-comment[data-v-7ba5bd90] {\n\tfont-style: italic;\n\tpadding: 5px;\n}\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -23671,7 +23716,7 @@ var render = function() {
                   }
                 ],
                 ref: "price",
-                attrs: { disabled: _vm.updating },
+                attrs: { disabled: _vm.updating, maxlength: "10" },
                 domProps: { value: _vm.currentWish.price },
                 on: {
                   input: function($event) {
@@ -23921,11 +23966,13 @@ var render = function() {
                                 ]),
                                 _vm._v(" "),
                                 list_wish.price
-                                  ? _c("input", {
-                                      staticClass: "price",
-                                      attrs: { readonly: true },
-                                      domProps: { value: list_wish.price }
-                                    })
+                                  ? _c("div", { staticClass: "price" }, [
+                                      _vm._v(
+                                        "\n\t\t\t\t\t\t\t\t\t" +
+                                          _vm._s(list_wish.price) +
+                                          "\n\t\t\t\t\t\t\t\t"
+                                      )
+                                    ])
                                   : _vm._e()
                               ]),
                               _vm._v(" "),
@@ -23992,85 +24039,97 @@ var render = function() {
                                 : _vm._e(),
                               _vm._v(" "),
                               list_wish.comment
-                                ? _c("div", [
-                                    _c("textarea", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: list_wish.comment,
-                                          expression: "list_wish.comment"
-                                        }
-                                      ],
-                                      ref: "comment",
-                                      refInFor: true,
-                                      attrs: { readonly: "true" },
-                                      domProps: { value: list_wish.comment },
-                                      on: {
-                                        input: function($event) {
-                                          if ($event.target.composing) {
-                                            return
-                                          }
-                                          _vm.$set(
-                                            list_wish,
-                                            "comment",
-                                            $event.target.value
-                                          )
-                                        }
-                                      }
-                                    })
+                                ? _c("div", { staticClass: "wish-comment" }, [
+                                    _vm._v(
+                                      '\n\t\t\t\t\t\t\t\t"' +
+                                        _vm._s(list_wish.comment) +
+                                        '"\n\t\t\t\t\t\t\t'
+                                    )
                                   ])
                                 : _vm._e()
                             ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "wish-actions" }, [
-                              _c("ul", [
+                            _c(
+                              "div",
+                              { staticClass: "wish-actions" },
+                              [
                                 list_wish.createdBy === _vm.userId
-                                  ? _c(
-                                      "li",
-                                      {
-                                        staticClass: "button",
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.openWish(list_wish)
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n\t\t\t\t\t\t\t\t\t" +
-                                            _vm._s(_vm.t("wishlist", "Edit")) +
-                                            "\n\t\t\t\t\t\t\t\t"
-                                        )
-                                      ]
-                                    )
-                                  : _vm._e(),
-                                _vm._v(" "),
-                                list_wish.createdBy === _vm.userId
-                                  ? _c(
-                                      "li",
-                                      {
-                                        staticClass: "button",
-                                        attrs: { icon: "icon-delete" },
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.deleteWish(list_wish)
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n\t\t\t\t\t\t\t\t\t" +
-                                            _vm._s(
-                                              _vm.t("wishlist", "Delete")
-                                            ) +
-                                            "\n\t\t\t\t\t\t\t\t"
-                                        )
-                                      ]
-                                    )
+                                  ? [
+                                      _c(
+                                        "Popover",
+                                        [
+                                          _c("button", {
+                                            staticClass: "icon-more",
+                                            attrs: { slot: "trigger" },
+                                            slot: "trigger"
+                                          }),
+                                          _vm._v(" "),
+                                          [
+                                            _c("ul", [
+                                              _c(
+                                                "li",
+                                                {
+                                                  staticClass: "button",
+                                                  on: {
+                                                    click: function($event) {
+                                                      return _vm.openWish(
+                                                        list_wish
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\n\t\t\t\t\t\t\t\t\t\t\t\t" +
+                                                      _vm._s(
+                                                        _vm.t(
+                                                          "wishlist",
+                                                          "Edit"
+                                                        )
+                                                      ) +
+                                                      "\n\t\t\t\t\t\t\t\t\t\t\t"
+                                                  )
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "li",
+                                                {
+                                                  staticClass: "button",
+                                                  attrs: {
+                                                    icon: "icon-delete"
+                                                  },
+                                                  on: {
+                                                    click: function($event) {
+                                                      return _vm.deleteWish(
+                                                        list_wish
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\n\t\t\t\t\t\t\t\t\t\t\t\t" +
+                                                      _vm._s(
+                                                        _vm.t(
+                                                          "wishlist",
+                                                          "Delete"
+                                                        )
+                                                      ) +
+                                                      "\n\t\t\t\t\t\t\t\t\t\t\t"
+                                                  )
+                                                ]
+                                              )
+                                            ])
+                                          ]
+                                        ],
+                                        2
+                                      )
+                                    ]
                                   : _vm._e()
-                              ])
-                            ])
+                              ],
+                              2
+                            )
                           ])
                         ]
                       )

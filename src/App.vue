@@ -64,7 +64,10 @@
 				<label for="link">{{ t('wishlist', 'Link') }}</label>
 				<input ref="link" v-model="currentWish.link" :disabled="updating">
 				<label for="price">{{ t('wishlist', 'Price') }}</label>
-				<input ref="price" v-model="currentWish.price" :disabled="updating">
+				<input ref="price"
+					v-model="currentWish.price"
+					:disabled="updating"
+					maxlength="10">
 				<label for="userId">{{ t('wishlist', 'For') }}</label>
 				<div class="target-user">
 					<select v-model="currentWish.userId" :disabled="updating">
@@ -140,11 +143,11 @@
 									<span class="wish-title">
 										{{ list_wish.title }}
 									</span>
-									<input
+									<div
 										v-if="list_wish.price"
-										class="price"
-										:value="list_wish.price"
-										:readonly="true">
+										class="price">
+										{{ list_wish.price }}
+									</div>
 								</div>
 								<div>
 									{{ t('wishlist', 'Added by') }}
@@ -160,26 +163,31 @@
 										{{ formatUrl(list_wish.link) }}
 									</a>
 								</div>
-								<div v-if="list_wish.comment">
-									<textarea ref="comment" v-model="list_wish.comment" readonly="true" />
+								<div v-if="list_wish.comment" class="wish-comment">
+									"{{ list_wish.comment }}"
 								</div>
 							</div>
 							<div class="wish-actions">
-								<ul>
-									<li
-										v-if="list_wish.createdBy === userId"
-										class="button"
-										@click="openWish(list_wish)">
-										{{ t('wishlist', 'Edit') }}
-									</li>
-									<li
-										v-if="list_wish.createdBy === userId"
-										icon="icon-delete"
-										class="button"
-										@click="deleteWish(list_wish)">
-										{{ t('wishlist', 'Delete') }}
-									</li>
-								</ul>
+								<template v-if="list_wish.createdBy === userId">
+									<Popover>
+										<button slot="trigger" class="icon-more" />
+										<template>
+											<ul>
+												<li
+													class="button"
+													@click="openWish(list_wish)">
+													{{ t('wishlist', 'Edit') }}
+												</li>
+												<li
+													icon="icon-delete"
+													class="button"
+													@click="deleteWish(list_wish)">
+													{{ t('wishlist', 'Delete') }}
+												</li>
+											</ul>
+										</template>
+									</Popover>
+								</template>
 							</div>
 						</div>
 					</div>
@@ -198,7 +206,7 @@ import AppNavigationNew from '@nextcloud/vue/dist/Components/AppNavigationNew'
 import axios from '@nextcloud/axios'
 import Avatar from '@nextcloud/vue/dist/Components/Avatar'
 import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
-
+import Popover from '@nextcloud/vue/dist/Components/Popover'
 export default {
 	name: 'App',
 	components: {
@@ -209,6 +217,7 @@ export default {
 		AppNavigationNew,
 		Avatar,
 		UserBubble,
+		Popover,
 	},
 	data: function() {
 		return {
@@ -450,6 +459,7 @@ export default {
 		border: 1px solid gray;
 		margin-bottom: 20px;
 		border-radius: 5px;
+		max-width: 600px;
 	}
 
 	.wish-container {
@@ -496,5 +506,10 @@ export default {
 	a {
 		color: #0c76ff;
 		text-decoration: underline;
+	}
+
+	.wish-comment {
+		font-style: italic;
+		padding: 5px;
 	}
 </style>
