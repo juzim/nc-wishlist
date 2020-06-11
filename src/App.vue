@@ -157,7 +157,7 @@
 									<a
 										:href="list_wish.link"
 										target="_blank">
-										{{ list_wish.link }}
+										{{ formatUrl(list_wish.link) }}
 									</a>
 								</div>
 								<div v-if="list_wish.comment">
@@ -413,6 +413,15 @@ export default {
 			} catch (e) {
 				console.error(e)
 				OCP.Toast.error(t('wishlist', 'Could not delete the wish'))
+			}
+		},
+		formatUrl(url) {
+			try {
+				const uri = new URL(url)
+
+				return uri.hostname
+			} catch (TypeError) {
+				return url
 			}
 		},
 	},

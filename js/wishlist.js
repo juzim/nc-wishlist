@@ -4824,6 +4824,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee4, null, [[0, 8]]);
       }))();
+    },
+    formatUrl: function formatUrl(url) {
+      try {
+        var uri = new URL(url);
+        return uri.hostname;
+      } catch (TypeError) {
+        return url;
+      }
     }
   }
 });
@@ -23973,7 +23981,9 @@ var render = function() {
                                       [
                                         _vm._v(
                                           "\n\t\t\t\t\t\t\t\t\t" +
-                                            _vm._s(list_wish.link) +
+                                            _vm._s(
+                                              _vm.formatUrl(list_wish.link)
+                                            ) +
                                             "\n\t\t\t\t\t\t\t\t"
                                         )
                                       ]
