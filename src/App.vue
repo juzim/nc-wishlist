@@ -114,13 +114,17 @@
 						</div>
 						<div class="wish-container">
 							<div class="wish-details">
-								<div>
-									<h3>{{ list_wish.title }}</h3>
-									<div>{{ t('wishlist', 'Added by') }} {{ getUser(list_wish.createdBy).name }} on {{ list_wish.createdAt }}</div>
+								<div class="wish-header">
+									<span class="wish-title">
+										{{ list_wish.title }}
+									</span>
+									<input
+										v-if="list_wish.price"
+										class="price"
+										:value="list_wish.price"
+										:readonly="true">
 								</div>
-								<div v-if="list_wish.price" :class="price">
-									{{ list_wish.price }}
-								</div>
+								<div>{{ t('wishlist', 'Added by') }} {{ getUser(list_wish.createdBy).name }} on {{ list_wish.createdAt }}</div>
 								<div v-if="list_wish.link">
 									<a
 										:href="list_wish.link"
@@ -427,5 +431,20 @@ export default {
 	.list-user-avatar {
 		float: left;
 		margin-right: 10px;
+	}
+
+	.price {
+		float: right;
+		width: 70px;
+	}
+
+	.wish-title {
+		width: 100%;
+		font-size: 20px;
+	}
+
+	a {
+		color: #0c76ff;
+		text-decoration: underline;
 	}
 </style>
