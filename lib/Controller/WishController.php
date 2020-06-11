@@ -32,12 +32,29 @@
     /**
     * @NoAdminRequired
     */
-    public function index() {   
+    public function index() {
+        $wishes = $this->service->findAll($this->userId);
+
+        $ids = [];
+
+        foreach ($wishes as $wish) {
+            $ids[] = $wish->getUserId();
+        }
+
+        $users = [];
+        foreach (array_unique($ids) as $id) {
+            $user = $this->userManager->get($id);
+            $users[$id] = [
+                "uid" => $user->getUID(),
+                "name" => $user->getDisplayName(),
+            ];
+        }
 
         return new DataResponse([
             "userId" => $this->userId,
-            "wishes" => $this->service->findAll($this->userId),
-            "users" => $this->userManager->search(''),
+            "wishes" => $wishes,
+            "users" => $users,
+            // "users" => $this->userManager->search(''),
         ]);
     }
 
