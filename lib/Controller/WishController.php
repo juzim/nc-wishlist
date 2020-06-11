@@ -38,7 +38,9 @@
         $ids = [];
 
         foreach ($wishes as $wish) {
-            $ids[] = $wish->getUserId();
+            if ($wish->getUserId()) {
+                $ids[] = $wish->getUserId();
+            }
         }
 
         $users = [];

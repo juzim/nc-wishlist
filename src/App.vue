@@ -8,6 +8,25 @@
 				button-class="icon-add"
 				@click="newWish" />
 
+			<div id="app-navigation">
+				<ul>
+					<li class="icon-star">
+						<a href="#" @click="selectUser()">{{ t('wishlist', 'All users') }}</a>
+					</li>
+					<li
+						v-for="user in users"
+						:key="user.uid"
+						@click="selectUser(user.uid)">
+						<!-- <Avatar
+							:user="user.uid"
+							:displayName="getUser(user.uid).name" /> -->
+						<a href="#">
+							{{ getUser(user.uid).name }}
+						</a>
+					</li>
+				</ul>
+			</div>
+
 			<!-- <AppNavigationNew v-if="!loading"
 				:text="t('wishlist', 'Your wishes')"
 				:disabled="false"
@@ -93,7 +112,10 @@
 							:class="'wish-status ' + ( list_wish.grabbedBy ? (list_wish.grabbedBy === userId ? 'bg-green' : 'bg-red') : '')">
 							<span
 								v-if="list_wish.grabbedBy && list_wish.grabbedBy !== userId">
-								{{ t('wishlist', 'Grabbed by ' + getUser(list_wish.grabbedBy).name) }}
+								{{ t('wishlist', 'Grabbed by ') }}
+								<UserBubble :user="getUser(list_wish.grabbedBy).uid" :display-name="getUser(list_wish.grabbedBy).name">
+									{{ getUser(list_wish.grabbedBy).name }}
+								</UserBubble>
 							</span>
 							<span v-else-if="list_wish.grabbedBy === userId">
 								{{ t('wishlist', 'Grabbed by you') }}
@@ -124,7 +146,13 @@
 										:value="list_wish.price"
 										:readonly="true">
 								</div>
-								<div>{{ t('wishlist', 'Added by') }} {{ getUser(list_wish.createdBy).name }} on {{ list_wish.createdAt }}</div>
+								<div>
+									{{ t('wishlist', 'Added by') }}
+									<UserBubble :user="getUser(list_wish.createdBy).uid" :display-name="getUser(list_wish.createdBy).name">
+										{{ getUser(list_wish.createdBy).name }}
+									</UserBubble>
+									on {{ list_wish.createdAt }}
+								</div>
 								<div v-if="list_wish.link">
 									<a
 										:href="list_wish.link"
@@ -169,6 +197,7 @@ import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
 import AppNavigationNew from '@nextcloud/vue/dist/Components/AppNavigationNew'
 import axios from '@nextcloud/axios'
 import Avatar from '@nextcloud/vue/dist/Components/Avatar'
+import UserBubble from '@nextcloud/vue/dist/Components/UserBubble'
 
 export default {
 	name: 'App',
@@ -179,6 +208,7 @@ export default {
 		// AppNavigationItem,
 		AppNavigationNew,
 		Avatar,
+		UserBubble,
 	},
 	data: function() {
 		return {
@@ -213,26 +243,18 @@ export default {
 			return this.currentWish && this.currentWish.title !== '' && this.currentWish.user_id !== ''
 		},
 	},
+
 	/**
 	 * Fetch list of wishes when the component is loaded
 	 */
 	async mounted() {
 		try {
 			const response = await axios.get(OC.generateUrl('/apps/wishlist/wishes'))
-			const wishes = {}
-
-			for (let i = 0; i < response.data.wishes.length; i++) {
-				const wish = response.data.wishes[i]
-				if (wish.userId in wishes) {
-					wishes[wish.userId].push(wish)
-				} else {
-					wishes[wish.userId] = [wish]
-				}
-			}
-
-			this.wishesByUser = wishes
 
 			this.wishes = response.data.wishes
+
+			this.filterWishesByUser()
+
 			this.userId = response.data.userId
 			this.users = response.data.users
 		} catch (e) {
@@ -241,7 +263,6 @@ export default {
 		}
 		this.loading = false
 	},
-
 	methods: {
 		/**
 		 * Create a new wish and focus the wish content field automatically
@@ -258,6 +279,26 @@ export default {
 		},
 		openOverview() {
 			this.currentWishId = null
+		},
+		selectUser(userId) {
+			this.filterWishesByUser(userId)
+		},
+		filterWishesByUser(userId) {
+			const wishes = {}
+
+			for (let i = 0; i < this.wishes.length; i++) {
+				const wish = this.wishes[i]
+				if (userId && wish.userId !== userId) {
+					continue
+				}
+				if (wish.userId in wishes) {
+					wishes[wish.userId].push(wish)
+				} else {
+					wishes[wish.userId] = [wish]
+				}
+			}
+
+			this.wishesByUser = wishes
 		},
 		/**
 		 * Action tiggered when clicking the save button
