@@ -44,10 +44,18 @@
         $users = [];
         foreach (array_unique($ids) as $id) {
             $user = $this->userManager->get($id);
-            $users[$id] = [
-                "uid" => $user->getUID(),
-                "name" => $user->getDisplayName(),
-            ];
+            if ($user) {
+                $users[$id] = [
+                    "uid" => $user->getUID(),
+                    "name" => $user->getDisplayName(),
+                ];
+            } else {
+                \OC::$server->getLogger()->warning("User [{$id}] not found");
+                $users[$id] = [
+                    "uid" => $id,
+                    "name" => $id,
+                ];
+            }
         }
 
         return new DataResponse([

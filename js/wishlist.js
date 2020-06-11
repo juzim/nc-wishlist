@@ -4475,12 +4475,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           title: '',
           comment: '',
           price: '',
-          targetUser: ''
+          userId: ''
         });
         this.$nextTick(function () {
           _this4.$refs.title.focus();
         });
       }
+    },
+    getUser: function getUser(uid) {
+      if (this.users[uid] === undefined) {
+        console.error('User [' + uid + '] not found in list');
+        return {
+          'uid': uid,
+          'name': uid
+        };
+      }
+
+      return this.users[uid];
     },
 
     /**
@@ -23517,7 +23528,7 @@ var render = function() {
                           _c("Avatar", {
                             attrs: {
                               user: list_userId,
-                              displayName: _vm.users[list_userId].name
+                              displayName: _vm.getUser(list_userId).name
                             }
                           })
                         ],
@@ -23527,7 +23538,7 @@ var render = function() {
                       _c("h2", [
                         _vm._v(
                           "\n\t\t\t\t\t\t" +
-                            _vm._s(_vm.users[list_userId].name) +
+                            _vm._s(_vm.getUser(list_userId).name) +
                             "\n\t\t\t\t\t"
                         )
                       ])
@@ -23560,8 +23571,9 @@ var render = function() {
                                               _vm.t(
                                                 "wishlist",
                                                 "Grabbed by " +
-                                                  _vm.users[list_wish.grabbedBy]
-                                                    .name
+                                                  _vm.getUser(
+                                                    list_wish.grabbedBy
+                                                  ).name
                                               )
                                             ) +
                                             "\n\t\t\t\t\t\t"
@@ -23642,7 +23654,7 @@ var render = function() {
                                     _vm._s(_vm.t("wishlist", "Added by")) +
                                       " " +
                                       _vm._s(
-                                        _vm.users[list_wish.createdBy].name
+                                        _vm.getUser(list_wish.createdBy).name
                                       ) +
                                       " on " +
                                       _vm._s(list_wish.createdAt)

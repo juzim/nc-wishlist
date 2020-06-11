@@ -79,10 +79,10 @@
 						<span class="list-user-avatar">
 							<Avatar
 								:user="list_userId"
-								:displayName="users[list_userId].name" />
+								:displayName="getUser(list_userId).name" />
 						</span>
 						<h2>
-							{{ users[list_userId].name }}
+							{{ getUser(list_userId).name }}
 						</h2>
 					</div>
 					<div v-for="list_wish in list_wishes"
@@ -93,7 +93,7 @@
 							:class="'wish-status ' + ( list_wish.grabbedBy ? (list_wish.grabbedBy === userId ? 'bg-green' : 'bg-red') : '')">
 							<span
 								v-if="list_wish.grabbedBy && list_wish.grabbedBy !== userId">
-								{{ t('wishlist', 'Grabbed by ' + users[list_wish.grabbedBy].name) }}
+								{{ t('wishlist', 'Grabbed by ' + getUser(list_wish.grabbedBy).name) }}
 							</span>
 							<span v-else-if="list_wish.grabbedBy === userId">
 								{{ t('wishlist', 'Grabbed by you') }}
@@ -116,7 +116,7 @@
 							<div class="wish-details">
 								<div>
 									<h3>{{ list_wish.title }}</h3>
-									<div>{{ t('wishlist', 'Added by') }} {{ users[list_wish.createdBy].name }} on {{ list_wish.createdAt }}</div>
+									<div>{{ t('wishlist', 'Added by') }} {{ getUser(list_wish.createdBy).name }} on {{ list_wish.createdAt }}</div>
 								</div>
 								<div v-if="list_wish.price" :class="price">
 									{{ list_wish.price }}
@@ -293,12 +293,23 @@ export default {
 					title: '',
 					comment: '',
 					price: '',
-					targetUser: '',
+					userId: '',
 				})
 				this.$nextTick(() => {
 					this.$refs.title.focus()
 				})
 			}
+		},
+		getUser(uid) {
+			if (this.users[uid] === undefined) {
+				console.error('User [' + uid + '] not found in list')
+				return {
+					'uid': uid,
+					'name': uid,
+				}
+			}
+
+			return this.users[uid]
 		},
 		/**
 		 * Abort creating a new wish
