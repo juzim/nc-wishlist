@@ -4301,6 +4301,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 // import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 
  // import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
@@ -11243,7 +11248,7 @@ $({ global: true, forced: !USE_NATIVE_URL, sham: !DESCRIPTORS }, {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n#app-content > div[data-v-7ba5bd90] {\n\twidth: 100%;\n\theight: 100%;\n\tpadding: 20px;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex-grow: 1;\n}\ninput[type='text'][data-v-7ba5bd90] {\n\twidth: 100%;\n}\ntextarea[data-v-7ba5bd90] {\n\tflex-grow: 1;\n\twidth: 100%;\n}\n.wish-item[data-v-7ba5bd90] {\n\tborder: 1px solid gray;\n\tmargin-bottom: 20px;\n\tborder-radius: 5px;\n}\n.wish-container[data-v-7ba5bd90] {\n\tdisplay: flex;\n}\n.wish-details[data-v-7ba5bd90] {\n\tpadding: 10px;\n\twidth: 100%;\n}\n.wish-status[data-v-7ba5bd90] {\n\tborder-bottom: 1px solid gray;\n\tpadding: 10px;\n}\n.bg-green[data-v-7ba5bd90] {\n\tbackground-color: darkseagreen;\n}\n.bg-red[data-v-7ba5bd90] {\n\tbackground-color: indianred;\n}\n.list-user-avatar[data-v-7ba5bd90] {\n\tfloat: left;\n\tmargin-right: 10px;\n}\n", ""]);
+exports.push([module.i, "\n#app-content > div[data-v-7ba5bd90] {\n\twidth: 100%;\n\theight: 100%;\n\tpadding: 20px;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex-grow: 1;\n}\ninput[type='text'][data-v-7ba5bd90] {\n\twidth: 100%;\n}\ntextarea[data-v-7ba5bd90] {\n\tflex-grow: 1;\n\twidth: 100%;\n}\n.wish-item[data-v-7ba5bd90] {\n\tborder: 1px solid gray;\n\tmargin-bottom: 20px;\n\tborder-radius: 5px;\n}\n.wish-container[data-v-7ba5bd90] {\n\tdisplay: flex;\n}\n.wish-details[data-v-7ba5bd90] {\n\tpadding: 10px;\n\twidth: 100%;\n}\n.wish-status[data-v-7ba5bd90] {\n\tborder-bottom: 1px solid gray;\n\tpadding: 10px;\n}\n.bg-green[data-v-7ba5bd90] {\n\tbackground-color: darkseagreen;\n}\n.bg-red[data-v-7ba5bd90] {\n\tbackground-color: indianred;\n}\n.list-user[data-v-7ba5bd90] {\n\tdisplay: flex;\n}\n.list-user-avatar[data-v-7ba5bd90] {\n\tfloat: left;\n\tmargin-right: 10px;\n}\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -23470,7 +23475,9 @@ var render = function() {
                       { key: user.uid, domProps: { value: user.uid } },
                       [
                         _vm._v(
-                          "\n\t\t\t\t\t\t" + _vm._s(user.name) + "\n\t\t\t\t\t"
+                          "\n\t\t\t\t\t\t" +
+                            _vm._s(_vm._f("capitalize")(user.name)) +
+                            "\n\t\t\t\t\t"
                         )
                       ]
                     )
@@ -23507,26 +23514,28 @@ var render = function() {
                   "div",
                   { key: list_userId },
                   [
-                    _c(
-                      "span",
-                      { staticClass: "list-user-avatar" },
-                      [
-                        _c("Avatar", {
-                          attrs: {
-                            user: list_userId,
-                            displayName: _vm.users[list_userId].name
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("h2", [
-                      _vm._v(
-                        "\n\t\t\t\t\t" +
-                          _vm._s(_vm.users[list_userId].name) +
-                          "\n\t\t\t\t"
-                      )
+                    _c("div", { staticClass: "list-user" }, [
+                      _c(
+                        "span",
+                        { staticClass: "list-user-avatar" },
+                        [
+                          _c("Avatar", {
+                            attrs: {
+                              user: list_userId,
+                              displayName: _vm.users[list_userId].name
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("h2", [
+                        _vm._v(
+                          "\n\t\t\t\t\t\t" +
+                            _vm._s(_vm._f("capitalize")(list_userId)) +
+                            "\n\t\t\t\t\t"
+                        )
+                      ])
                     ]),
                     _vm._v(" "),
                     _vm._l(list_wishes, function(list_wish) {
@@ -23556,11 +23565,10 @@ var render = function() {
                                               _vm.t(
                                                 "wishlist",
                                                 "Grabbed by " +
-                                                  _vm.users[list_wish.grabbedBy]
-                                                    .name
+                                                  list_wish.grabbedBy
                                               )
                                             ) +
-                                            "\n\t\t\t\t\t\t"
+                                            "\n\t\t\t\t\t\t\t"
                                         )
                                       ])
                                     : list_wish.grabbedBy === _vm.userId
@@ -23637,9 +23645,7 @@ var render = function() {
                                   _vm._v(
                                     _vm._s(_vm.t("wishlist", "Added by")) +
                                       " " +
-                                      _vm._s(
-                                        _vm.users[list_wish.createdBy].name
-                                      ) +
+                                      _vm._s(list_wish.createdBy) +
                                       " on " +
                                       _vm._s(list_wish.createdAt)
                                   )
