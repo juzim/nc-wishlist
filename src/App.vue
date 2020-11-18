@@ -168,12 +168,13 @@
 								</div>
 							</div>
 							<div class="wish-actions">
-								<template v-if="list_wish.createdBy === userId">
+								<template v-if="list_wish.createdBy === userId || list_wish.grabbedBy === userId">
 									<Popover>
 										<button slot="trigger" class="icon-more" />
 										<template>
 											<ul>
 												<li
+													v-if="list_wish.createdBy === userId"
 													class="button"
 													@click="openWish(list_wish)">
 													{{ t('wishlist', 'Edit') }}

@@ -4521,6 +4521,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 // import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
 
  // import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
@@ -24053,7 +24054,8 @@ var render = function() {
                               "div",
                               { staticClass: "wish-actions" },
                               [
-                                list_wish.createdBy === _vm.userId
+                                list_wish.createdBy === _vm.userId ||
+                                list_wish.grabbedBy === _vm.userId
                                   ? [
                                       _c(
                                         "Popover",
@@ -24066,31 +24068,35 @@ var render = function() {
                                           _vm._v(" "),
                                           [
                                             _c("ul", [
-                                              _c(
-                                                "li",
-                                                {
-                                                  staticClass: "button",
-                                                  on: {
-                                                    click: function($event) {
-                                                      return _vm.openWish(
-                                                        list_wish
+                                              list_wish.createdBy === _vm.userId
+                                                ? _c(
+                                                    "li",
+                                                    {
+                                                      staticClass: "button",
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          return _vm.openWish(
+                                                            list_wish
+                                                          )
+                                                        }
+                                                      }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n\t\t\t\t\t\t\t\t\t\t\t\t" +
+                                                          _vm._s(
+                                                            _vm.t(
+                                                              "wishlist",
+                                                              "Edit"
+                                                            )
+                                                          ) +
+                                                          "\n\t\t\t\t\t\t\t\t\t\t\t"
                                                       )
-                                                    }
-                                                  }
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "\n\t\t\t\t\t\t\t\t\t\t\t\t" +
-                                                      _vm._s(
-                                                        _vm.t(
-                                                          "wishlist",
-                                                          "Edit"
-                                                        )
-                                                      ) +
-                                                      "\n\t\t\t\t\t\t\t\t\t\t\t"
+                                                    ]
                                                   )
-                                                ]
-                                              ),
+                                                : _vm._e(),
                                               _vm._v(" "),
                                               _c(
                                                 "li",
