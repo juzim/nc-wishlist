@@ -101,7 +101,7 @@
 						<span class="list-user-avatar">
 							<Avatar
 								:user="list_userId"
-								:displayName="getUser(list_userId).name" />
+								:display-name="getUser(list_userId).name" />
 						</span>
 						<h2>
 							{{ getUser(list_userId).name }}
@@ -180,6 +180,7 @@
 													{{ t('wishlist', 'Edit') }}
 												</li>
 												<li
+													v-if="list_wish.createdBy === userId || list_wish.createdBy !== list_wish.userId"
 													icon="icon-delete"
 													class="button"
 													@click="deleteWish(list_wish)">
