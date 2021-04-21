@@ -158,7 +158,7 @@
 								</div>
 								<div v-if="list_wish.link">
 									<a
-										:href="list_wish.link"
+										:href="addAmazonTag(list_wish.link)"
 										target="_blank">
 										{{ formatUrl(list_wish.link) }}
 									</a>
@@ -423,6 +423,21 @@ export default {
 			} catch (e) {
 				console.error(e)
 				OCP.Toast.error(t('wishlist', 'Could not delete the wish'))
+			}
+		},
+		addAmazonTag(url) {
+			// @todo remove before release
+			console.info('checking link ' + url)
+			try {
+				const parsedUrl = new URL(url)
+				if (parsedUrl.hostname === 'www.amazon.de') {
+					console.info('is amazon link')
+					parsedUrl.searchParams.set('tag', 'cloud2partner-21')
+				}
+				return parsedUrl.toString()
+			} catch (e) {
+				console.error(e)
+				return url
 			}
 		},
 		formatUrl(url) {
