@@ -37,3 +37,7 @@
 .wish-item {
 	border: 1px solid gray;
 }
+
+.wish-comment {
+	overflow: auto;
+}
