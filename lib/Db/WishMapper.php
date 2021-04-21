@@ -1,12 +1,12 @@
 <?php
 namespace OCA\Wishlist\Db;
 
-use OCP\IDbConnection;
+use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 
 class WishMapper extends QBMapper {
 
-    public function __construct(IDbConnection $db) {
+    public function __construct(IDBConnection $db) {
         parent::__construct($db, 'wishes', Wish::class);
     }
 
