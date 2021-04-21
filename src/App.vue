@@ -101,7 +101,7 @@
 						<span class="list-user-avatar">
 							<Avatar
 								:user="list_userId"
-								:displayName="getUser(list_userId).name" />
+								:display-name="getUser(list_userId).name" />
 						</span>
 						<h2>
 							{{ getUser(list_userId).name }}
@@ -168,7 +168,7 @@
 								</div>
 							</div>
 							<div class="wish-actions">
-								<template v-if="list_wish.createdBy === userId || list_wish.grabbedBy === userId">
+								<template v-if="list_wish.createdBy === userId || (list_wish.grabbedBy === userId && list_wish.createdBy !== list_wish.userId)">
 									<Popover>
 										<button slot="trigger" class="icon-more" />
 										<template>
@@ -512,5 +512,6 @@ export default {
 	.wish-comment {
 		font-style: italic;
 		padding: 5px;
+		overflow: auto;
 	}
 </style>
