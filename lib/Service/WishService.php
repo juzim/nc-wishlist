@@ -118,11 +118,15 @@ class WishService {
 
     public function delete(int $id, string $userId) {
         try {
-            $wish = $this->mapper->find($id, $userId);
-            $this->mapper->delete($wish);
-            return $wish;
-        } catch(Exception $e) {
+            $wish = $this->mapper->findGlobal($id);
+		} catch(Exception $e) {
             $this->handleException($e);
         }
+		
+		if ($wish->getCreatedBy() !== $userId && $wish->getGrabbedBy !== $userId) {
+			throw new NotAllowedException('Wish not owned or grabbed by user');
+		}
+		$this->mapper->delete($wish);
+		return $wish;
     }
 }
